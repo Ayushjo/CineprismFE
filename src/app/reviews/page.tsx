@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/api";
 import { postToReview } from "@/lib/adapters";
 import { buildMetadata } from "@/lib/seo";
-import ReviewArchiveCard from "@/components/site/ReviewArchiveCard";
+import ReviewsBrowser from "@/components/site/ReviewsBrowser";
 
 export const revalidate = 300;
 
@@ -47,18 +47,14 @@ export default async function ReviewsPage() {
         </div>
       </section>
 
-      {/* Contact-sheet grid */}
+      {/* Search / filter / sort + contact-sheet grid */}
       <section className="relative py-16 sm:py-20">
         {reviews.length === 0 ? (
           <p className="mx-6 sm:mx-10 font-mono text-sm text-zinc-500">
             No reviews published yet.
           </p>
         ) : (
-          <div className="border-t border-l border-white/10 mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {reviews.map((r, i) => (
-              <ReviewArchiveCard key={r.id} review={r} index={i} priority={i < 3} />
-            ))}
-          </div>
+          <ReviewsBrowser reviews={reviews} />
         )}
       </section>
     </div>

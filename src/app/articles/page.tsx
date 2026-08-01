@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getArticles } from "@/lib/api";
 import { buildMetadata } from "@/lib/seo";
-import ArticleCard from "@/components/site/ArticleCard";
+import ArticlesBrowser from "@/components/site/ArticlesBrowser";
 
 export const revalidate = 300;
 
@@ -14,7 +14,6 @@ export const metadata: Metadata = buildMetadata({
 
 export default async function ArticlesPage() {
   const articles = (await getArticles()).filter((a) => a.published !== false);
-  const [first, ...rest] = articles;
 
   return (
     <div data-testid="articles-page">
@@ -44,19 +43,14 @@ export default async function ArticlesPage() {
         </div>
       </section>
 
-      {/* Grid */}
+      {/* Search / sort + grid */}
       <section className="relative py-16 sm:py-20">
         {articles.length === 0 ? (
           <p className="mx-6 sm:mx-10 font-mono text-sm text-zinc-500">
             No articles published yet.
           </p>
         ) : (
-          <div className="mx-auto max-w-[1600px] px-6 sm:px-10 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-            {first && <ArticleCard article={first} featured priority />}
-            {rest.map((a) => (
-              <ArticleCard key={a.id} article={a} />
-            ))}
-          </div>
+          <ArticlesBrowser articles={articles} />
         )}
       </section>
     </div>
