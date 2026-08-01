@@ -1,7 +1,7 @@
 /*
  * Adapters: backend models → the shapes the cinematic design components expect.
  */
-import type { Post, RatingCategory, Review, TopPick } from "@/types/content";
+import type { ContentBlock, Post, RatingCategory, Review, TopPick } from "@/types/content";
 import { slugify } from "@/lib/utils";
 
 const UUID_RE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
@@ -64,6 +64,25 @@ export function postToReview(post: Post): Review {
     viewCount: post.viewCount ?? 0,
     createdAt: post.createdAt,
   };
+}
+
+/** Flatten article blocks to plain text (for meta descriptions + JSON-LD). */
+export function blocksToPlainText(blocks: ContentBlock[] | undefined): string {
+  if (!blocks?.length) return "";
+  return [...blocks]
+    .sort((a, b) => a.order - b.order)
+    .map((b) => {
+      const c = (b.content ?? {}) as Record<string, unknown>;
+      if (b.type === "PARAGRAPH" || b.type === "HEADING" || b.type === "QUOTE") {
+        return typeof c.text === "string" ? c.text : "";
+      }
+      if (b.type === "LIST" && Array.isArray(c.items)) {
+        return (c.items as string[]).join(". ");
+      }
+      return "";
+    })
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 export function topPickToCard(pick: TopPick, index: number) {

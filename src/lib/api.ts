@@ -92,7 +92,7 @@ export async function getPostsByGenre(genre: string): Promise<Post[]> {
 /* -------------------------------- Articles -------------------------------- */
 
 export async function getArticles(): Promise<Article[]> {
-  const data = await apiFetch<{ articles: Article[] }>("/article/get-articles", {
+  const data = await apiFetch<{ articles: Article[] }>("/articles/get-articles", {
     tags: ["articles"],
   });
   return data.articles ?? [];
@@ -101,7 +101,7 @@ export async function getArticles(): Promise<Article[]> {
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   try {
     const data = await apiFetch<{ article: Article }>(
-      `/article/get-article/${encodeURIComponent(slug)}`,
+      `/articles/get-article/${encodeURIComponent(slug)}`,
       { tags: [`article:${slug}`] }
     );
     return data.article ?? null;
