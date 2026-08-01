@@ -31,7 +31,7 @@ export default function FilmCard({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
             priority={priority}
-            className="object-cover film-still group-hover:scale-[1.02] transition-transform duration-[1400ms] ease-film"
+            className="object-cover film-still group-hover:scale-[1.02]"
           />
         ) : (
           <div className="absolute inset-0 grid place-items-center">

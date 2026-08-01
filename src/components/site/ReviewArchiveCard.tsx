@@ -31,7 +31,7 @@ export default function ReviewArchiveCard({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             priority={priority}
-            className="object-cover film-still scale-[1.04] group-hover:scale-100 transition-all duration-[1200ms] ease-film"
+            className="object-cover film-still scale-[1.04] group-hover:scale-100"
           />
         ) : (
           <div className="absolute inset-0 grid place-items-center">
