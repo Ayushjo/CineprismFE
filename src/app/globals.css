@@ -73,6 +73,29 @@
   }
 }
 
+/*
+ * Editorial article grid: readable text column centered, images (and other
+ * .article-breakout blocks) break out wider on tablet/desktop so long-reads
+ * use the horizontal space instead of running as one narrow vertical column.
+ */
+@layer components {
+  .article-grid {
+    display: grid;
+    grid-template-columns: 1fr min(46rem, 100%) 1fr;
+  }
+  .article-grid > * {
+    grid-column: 2;
+    min-width: 0;
+  }
+  @media (min-width: 768px) {
+    .article-grid > .article-breakout {
+      grid-column: 1 / -1;
+      width: 100%;
+      justify-self: center;
+    }
+  }
+}
+
 /* Utility: film-still treatment (grayscale → color on hover) */
 @layer components {
   .film-still {

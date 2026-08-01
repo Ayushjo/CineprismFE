@@ -144,30 +144,32 @@ export default async function ArticleDetailPage({
 
       {/* Lead image */}
       {article.mainImageUrl ? (
-        <div className="mx-auto max-w-5xl px-6 sm:px-10 mb-14 sm:mb-20">
+        <div className="mx-auto max-w-[72rem] px-6 sm:px-10 mb-14 sm:mb-20">
           <div className="relative aspect-[2.35/1] overflow-hidden border border-white/10 bg-surface">
             <Image
               src={article.mainImageUrl}
               alt={article.title}
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 1024px"
+              sizes="(max-width: 1200px) 100vw, 1152px"
               className="object-cover"
             />
           </div>
         </div>
       ) : null}
 
-      {/* Body */}
-      <div className="mx-auto max-w-3xl px-6 sm:px-10">
+      {/* Body — readable text column, images break out wider (see .article-grid) */}
+      <div className="mx-auto max-w-[72rem] px-6 sm:px-10">
         {article.blocks?.length ? (
           <BlockRenderer blocks={article.blocks} />
         ) : (
-          <p className="font-mono text-sm text-zinc-500">This article has no content yet.</p>
+          <p className="mx-auto max-w-[46rem] font-mono text-sm text-zinc-500">
+            This article has no content yet.
+          </p>
         )}
 
         {/* Signature + share */}
-        <div className="mt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-t border-white/10 pt-10">
+        <div className="mx-auto max-w-[46rem] mt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-t border-white/10 pt-10">
           <div className="flex items-center gap-4">
             <span className="h-px w-16 bg-white/30" />
             <p className="font-serif italic text-zinc-500 text-lg">— {article.author || SITE_NAME}</p>

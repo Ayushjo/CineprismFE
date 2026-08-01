@@ -43,18 +43,18 @@ function Heading({ c }: { c: HeadingC }) {
 function BlockImage({ c }: { c: ImageC }) {
   if (!c.url) return null;
   return (
-    <figure className="my-12">
+    <figure className="article-breakout my-12 md:my-16">
       <div className="relative aspect-video overflow-hidden border border-white/10 bg-surface">
         <Image
           src={c.url}
           alt={c.caption || ""}
           fill
-          sizes="(max-width: 768px) 100vw, 768px"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1152px"
           className="object-cover"
         />
       </div>
       {c.caption ? (
-        <figcaption className="mt-3 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+        <figcaption className="mt-3 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-500 text-center">
           {c.caption}
         </figcaption>
       ) : null}
@@ -101,7 +101,7 @@ export default function BlockRenderer({ blocks }: { blocks: ContentBlock[] }) {
   let firstParagraphSeen = false;
 
   return (
-    <div className="article-body">
+    <div className="article-grid">
       {ordered.map((block) => {
         switch (block.type) {
           case "PARAGRAPH": {

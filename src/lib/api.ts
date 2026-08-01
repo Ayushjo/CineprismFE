@@ -18,23 +18,38 @@ type FetchOpts = {
   auth?: string; // bearer token for authed server calls
 };
 
+const MAX_RETRIES = 5;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 async function apiFetch<T>(path: string, opts: FetchOpts = {}): Promise<T> {
   const { revalidate = DEFAULT_REVALIDATE, method = "GET", body, tags, auth } = opts;
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (auth) headers.Authorization = `Bearer ${auth}`;
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    method,
-    headers,
-    body: body != null ? JSON.stringify(body) : undefined,
-    next: revalidate === false ? undefined : { revalidate, tags },
-    cache: revalidate === false ? "no-store" : undefined,
-  });
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method,
+      headers,
+      body: body != null ? JSON.stringify(body) : undefined,
+      next: revalidate === false ? undefined : { revalidate, tags },
+      cache: revalidate === false ? "no-store" : undefined,
+    });
 
-  if (!res.ok) {
+    if (res.ok) return (await res.json()) as T;
+
+    // Retry transient rate-limit / server errors with backoff so SSG builds
+    // (which fetch ~100 pages in a burst) don't bake 404/500s.
+    if ((res.status === 429 || res.status >= 500) && attempt < MAX_RETRIES) {
+      const retryAfter = Number(res.headers.get("retry-after"));
+      const wait = Number.isFinite(retryAfter) && retryAfter > 0
+        ? retryAfter * 1000
+        : Math.min(4000, 300 * 2 ** attempt) + Math.random() * 250;
+      await sleep(wait);
+      continue;
+    }
+
     throw new Error(`API ${method} ${path} failed: ${res.status}`);
   }
-  return (await res.json()) as T;
 }
 
 /* ----------------------------- Reviews (Posts) ---------------------------- */
