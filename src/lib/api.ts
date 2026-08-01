@@ -3,7 +3,7 @@
  * Public content is fetched server-side (RSC) with ISR revalidation.
  * The backend base URL comes from NEXT_PUBLIC_API_URL.
  */
-import type { Article, Post, TopPick } from "@/types/content";
+import type { Article, GenreMovie, Post, TopPick } from "@/types/content";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL || "https://api.thecineprism.com/api/v1";
@@ -87,6 +87,19 @@ export async function getRelatedPosts(id: string): Promise<Post[]> {
       tags: [`post:${id}`],
     });
     return data.relatedPosts ?? [];
+  } catch {
+    return [];
+  }
+}
+
+/** Curated genre movies from the byGenres collection (public endpoint). */
+export async function getGenreMovies(genre: string): Promise<GenreMovie[]> {
+  try {
+    const data = await apiFetch<{ genrePosts?: GenreMovie[] }>(
+      `/admin/fetch-byGenre/${encodeURIComponent(genre)}`,
+      { tags: [`genre:${genre}`] }
+    );
+    return data.genrePosts ?? [];
   } catch {
     return [];
   }

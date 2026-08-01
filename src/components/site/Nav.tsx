@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -44,7 +45,14 @@ export default function Nav() {
       <div className="mx-auto max-w-[1600px] px-6 sm:px-10 py-5 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" data-testid="nav-logo" className="group flex items-center gap-3">
-          <span className="h-2 w-2 bg-brand-gold shrink-0" aria-hidden="true" />
+          <Image
+            src="/thecineprismlogo.jpg"
+            alt="The Cineprism"
+            width={36}
+            height={36}
+            priority
+            className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover ring-1 ring-white/20 shrink-0"
+          />
           <span className="font-serif text-xl sm:text-2xl tracking-[0.02em] text-white leading-none">
             The<span className="italic font-light"> Cineprism</span>
           </span>

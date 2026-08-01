@@ -22,6 +22,7 @@ export const GENRES: GenreDef[] = [
   { slug: "animation", name: "Animation", query: "Animation", accent: "gold", tagline: "Drawn worlds, deeper truths." },
   { slug: "comedy", name: "Comedy", query: "Comedy", accent: "neutral", tagline: "Tragedy, timed." },
   { slug: "war", name: "War", query: "War", accent: "neutral", tagline: "The theatre of the worst of us." },
+  { slug: "crime", name: "Crime", query: "Crime", accent: "red", tagline: "The city, and everything it hides." },
 ];
 
 export function genreBySlug(slug: string): GenreDef | undefined {

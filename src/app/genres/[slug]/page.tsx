@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { getPostsByGenre } from "@/lib/api";
-import { postToReview } from "@/lib/adapters";
+import { getGenreMovies } from "@/lib/api";
 import { buildMetadata } from "@/lib/seo";
 import { GENRES, genreBySlug } from "@/lib/genres";
-import ReviewArchiveCard from "@/components/site/ReviewArchiveCard";
+import GenreMovieCard from "@/components/site/GenreMovieCard";
 
-export const revalidate = 600;
+export const revalidate = 1800;
 
 type Params = { slug: string };
 
@@ -25,8 +24,8 @@ export async function generateMetadata({
   const genre = genreBySlug(slug);
   if (!genre) return buildMetadata({ title: "Genre not found", path: `/genres/${slug}` });
   return buildMetadata({
-    title: `${genre.name} Films`,
-    description: `${genre.name} reviews from The Cineprism — ${genre.tagline}`,
+    title: `${genre.name} — Curated Films`,
+    description: `A curated collection of ${genre.name.toLowerCase()} films from The Cineprism — ${genre.tagline}`,
     path: `/genres/${genre.slug}`,
   });
 }
@@ -40,8 +39,9 @@ export default async function GenreDetailPage({
   const genre = genreBySlug(slug);
   if (!genre) notFound();
 
-  const posts = await getPostsByGenre(genre.query);
-  const reviews = posts.map(postToReview);
+  const movies = (await getGenreMovies(genre.query)).sort(
+    (a, b) => (b.year || 0) - (a.year || 0)
+  );
 
   return (
     <div data-testid="genre-detail-page">
@@ -57,7 +57,7 @@ export default async function GenreDetailPage({
           <div className="flex items-center gap-4 mb-6">
             <span className="h-px w-12 bg-brand-gold" />
             <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-zinc-500">
-              {String(reviews.length).padStart(2, "0")} on file
+              {String(movies.length).padStart(2, "0")} films in the collection
             </p>
           </div>
           <h1 className="font-serif font-light text-white text-6xl sm:text-7xl lg:text-[8vw] leading-[0.88] tracking-[-0.02em]">
@@ -71,14 +71,14 @@ export default async function GenreDetailPage({
       </section>
 
       <section className="relative py-16 sm:py-20">
-        {reviews.length === 0 ? (
-          <p className="mx-6 sm:mx-10 font-mono text-sm text-zinc-500">
-            No {genre.name} reviews yet — check back soon.
+        {movies.length === 0 ? (
+          <p className="mx-6 sm:mx-10 font-serif italic text-zinc-500 text-lg">
+            No {genre.name.toLowerCase()} films in the collection yet — check back soon.
           </p>
         ) : (
-          <div className="border-t border-l border-white/10 mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {reviews.map((r, i) => (
-              <ReviewArchiveCard key={r.id} review={r} index={i} priority={i < 3} />
+          <div className="mx-auto max-w-[1600px] px-6 sm:px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 lg:gap-6">
+            {movies.map((m, i) => (
+              <GenreMovieCard key={m.id} movie={m} priority={i < 5} />
             ))}
           </div>
         )}

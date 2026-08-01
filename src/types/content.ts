@@ -91,6 +91,17 @@ export interface Article {
   _count?: { comments?: number; likes?: number };
 }
 
+/** A curated movie in the `byGenres` collection (recommendation, not a review). */
+export interface GenreMovie {
+  id: string;
+  title: string;
+  genre: string[];
+  directedBy: string;
+  year: number;
+  posterImageUrl: string;
+  synopsis: string;
+}
+
 export interface TopPick {
   id: string;
   title: string;
