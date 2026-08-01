@@ -5,6 +5,7 @@ import GrainOverlay from "@/components/site/GrainOverlay";
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import LenisProvider from "@/providers/LenisProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, TWITTER_HANDLE } from "@/lib/seo";
 
 const cormorant = Cormorant_Garamond({
@@ -63,12 +64,14 @@ export default function RootLayout({
       className={`${cormorant.variable} ${plexMono.variable} ${inter.variable}`}
     >
       <body className="bg-ink text-white antialiased selection:bg-brand-gold selection:text-black">
-        <LenisProvider>
-          <GrainOverlay />
-          <Nav />
-          <main>{children}</main>
-          <Footer />
-        </LenisProvider>
+        <AuthProvider>
+          <LenisProvider>
+            <GrainOverlay />
+            <Nav />
+            <main>{children}</main>
+            <Footer />
+          </LenisProvider>
+        </AuthProvider>
       </body>
     </html>
   );

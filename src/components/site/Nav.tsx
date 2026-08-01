@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/providers/AuthProvider";
 
 const links = [
   { label: "Reviews", to: "/reviews" },
@@ -15,6 +16,7 @@ const links = [
 
 export default function Nav() {
   const pathname = usePathname();
+  const { user, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -85,21 +87,48 @@ export default function Nav() {
           >
             @TheCineprism ↗
           </a>
-          <Link
-            href="/auth"
-            data-testid="nav-signin-btn"
-            className="hidden sm:inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-300 hover:text-white transition-colors duration-300"
-          >
-            Sign In
-          </Link>
-          <Link
-            href="/auth"
-            data-testid="nav-subscribe-btn"
-            className="inline-flex items-center gap-2 border border-white/20 hover:border-white bg-transparent px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
-          >
-            <span>Sign Up</span>
-            <span aria-hidden="true">→</span>
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-300">
+                {user.profilePicture ? (
+                  <Image
+                    src={user.profilePicture}
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="h-6 w-6 rounded-full object-cover ring-1 ring-white/20"
+                  />
+                ) : null}
+                <span className="max-w-[120px] truncate">{user.username}</span>
+              </span>
+              <button
+                type="button"
+                onClick={logout}
+                data-testid="nav-logout-btn"
+                className="inline-flex items-center gap-2 border border-white/20 hover:border-white bg-transparent px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link
+                href="/auth"
+                data-testid="nav-signin-btn"
+                className="hidden sm:inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-300 hover:text-white transition-colors duration-300"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth"
+                data-testid="nav-subscribe-btn"
+                className="inline-flex items-center gap-2 border border-white/20 hover:border-white bg-transparent px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
+              >
+                <span>Sign In</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </>
+          )}
           <button
             type="button"
             aria-label="Toggle menu"
