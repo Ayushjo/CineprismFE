@@ -38,6 +38,7 @@ export default function Footer() {
               <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
               <li><Link href="/top-picks" className="hover:text-white transition-colors">Top Picks</Link></li>
               <li><Link href="/genres" className="hover:text-white transition-colors">Genres</Link></li>
+              <li><Link href="/trending" className="hover:text-white transition-colors">Trending</Link></li>
               <li><Link href="/articles" className="hover:text-white transition-colors">Articles</Link></li>
               <li><Link href="/newsletter" className="hover:text-white transition-colors">Weekly</Link></li>
             </ul>

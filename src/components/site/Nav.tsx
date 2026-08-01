@@ -10,6 +10,7 @@ const links = [
   { label: "Reviews", to: "/reviews" },
   { label: "Top Picks", to: "/top-picks" },
   { label: "Genres", to: "/genres" },
+  { label: "Trending", to: "/trending" },
   { label: "Articles", to: "/articles" },
   { label: "Weekly", to: "/newsletter" },
 ];

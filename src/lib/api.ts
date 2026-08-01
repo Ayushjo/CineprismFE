@@ -151,4 +151,28 @@ export async function getTopPicks(): Promise<TopPick[]> {
   }
 }
 
+/* ------------------------------- Trending --------------------------------- */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getTrendingMovies(): Promise<any[]> {
+  try {
+    const data = await apiFetch<{ data?: unknown[] }>("/movies", { tags: ["trending"] });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (data.data ?? []) as any[];
+  } catch {
+    return [];
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getTrendingNews(): Promise<any[]> {
+  try {
+    const data = await apiFetch<{ data?: unknown[] }>("/news", { tags: ["trending-news"] });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (data.data ?? []) as any[];
+  } catch {
+    return [];
+  }
+}
+
 export { API_BASE };
