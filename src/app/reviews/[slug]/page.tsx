@@ -83,7 +83,7 @@ export default async function ReviewDetailPage({
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 40vw"
-                    className="object-cover film-still hover:grayscale-0"
+                    className="object-cover"
                   />
                 ) : null}
               </div>
