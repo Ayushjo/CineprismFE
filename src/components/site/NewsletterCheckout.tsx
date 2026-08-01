@@ -23,7 +23,8 @@ type Interval = "MONTHLY" | "YEARLY";
 declare global { interface Window { Razorpay?: any } }
 
 function formatPrice(amount: string | number, currency: string) {
-  const n = typeof amount === "string" ? parseFloat(amount) : amount;
+  // Amounts are stored in the smallest unit (paise for INR).
+  const n = (typeof amount === "string" ? parseFloat(amount) : amount) / 100;
   const symbol = currency?.toLowerCase() === "inr" ? "₹" : "";
   return `${symbol}${Math.round(n)}`;
 }
