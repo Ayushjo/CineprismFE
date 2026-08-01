@@ -8,6 +8,11 @@ export interface RatingCategory {
   score: number; // 0–100
 }
 
+export interface PostImage {
+  id: string;
+  imageUrl: string;
+}
+
 /** Backend `Post` (a review). */
 export interface Post {
   id: string;
@@ -23,6 +28,7 @@ export interface Post {
   ratingCategories: RatingCategory[];
   viewCount: number;
   relatedPostIds?: string[];
+  images?: PostImage[]; // gallery (poster/backdrop already filtered out by backend)
   createdAt: string;
   updatedAt?: string;
   comments?: unknown[];
@@ -40,7 +46,14 @@ export interface Review {
   director: string;
   streaming: string;
   language: string;
+  /** Vertical/main poster (posterImageUrl) — use for 3:4 displays. */
+  poster?: string | null;
+  /** Horizontal backdrop (reviewPosterImageUrl) — use for 16:9 / 2.35:1 displays. */
+  backdrop?: string | null;
+  /** Generic best-available image (poster ‖ backdrop) — for OG/meta. */
   image?: string | null;
+  /** Gallery stills. */
+  gallery: string[];
   tagline?: string;
   body: string[];
   rating: RatingCategory[];

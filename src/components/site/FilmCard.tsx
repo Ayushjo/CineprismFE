@@ -17,6 +17,11 @@ export default function FilmCard({
   index = 0,
 }: FilmCardProps) {
   const aspect = ratio === "poster" ? "aspect-[3/4]" : "aspect-video";
+  // Vertical → main poster; horizontal → backdrop.
+  const src =
+    ratio === "poster"
+      ? review.poster || review.backdrop
+      : review.backdrop || review.poster;
   return (
     <Link
       href={`/reviews/${review.slug}`}
@@ -24,9 +29,9 @@ export default function FilmCard({
       className="group block border border-white/10 hover:border-white/30 transition-colors"
     >
       <div className={`relative ${aspect} overflow-hidden bg-surface`}>
-        {review.image ? (
+        {src ? (
           <Image
-            src={review.image}
+            src={src}
             alt={review.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"

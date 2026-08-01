@@ -45,6 +45,11 @@ export function postToReview(post: Post): Review {
     ? rating.reduce((a, c) => a + c.score, 0) / rating.length
     : 0;
   const firstLine = body[0] ?? "";
+  const poster = post.posterImageUrl || null;
+  const backdrop = post.reviewPosterImageUrl || null;
+  const gallery = (post.images ?? [])
+    .map((img) => img?.imageUrl)
+    .filter((u): u is string => Boolean(u));
 
   return {
     slug: reviewSlug(post),
@@ -55,7 +60,10 @@ export function postToReview(post: Post): Review {
     director: post.directedBy,
     streaming: post.streamingAt,
     language: post.language,
-    image: post.posterImageUrl || post.reviewPosterImageUrl || null,
+    poster,
+    backdrop,
+    image: poster || backdrop,
+    gallery,
     tagline: firstLine.length > 160 ? firstLine.slice(0, 157).trimEnd() + "…" : firstLine,
     body,
     rating,

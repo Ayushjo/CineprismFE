@@ -9,6 +9,7 @@ import { buildMetadata, absoluteUrl } from "@/lib/seo";
 import { truncate } from "@/lib/utils";
 import ReviewBody from "@/components/content/ReviewBody";
 import RatingBreakdown from "@/components/content/RatingBreakdown";
+import ReviewGallery from "@/components/content/ReviewGallery";
 import ShareButton from "@/components/content/ShareButton";
 import JsonLd from "@/components/seo/JsonLd";
 import { reviewJsonLd } from "@/lib/jsonld";
@@ -75,9 +76,9 @@ export default async function ReviewDetailPage({
             {/* Poster */}
             <div className="lg:col-span-5">
               <div className="relative aspect-[3/4] overflow-hidden bg-surface border border-white/10">
-                {review.image ? (
+                {review.poster || review.backdrop ? (
                   <Image
-                    src={review.image}
+                    src={(review.poster || review.backdrop) as string}
                     alt={review.title}
                     fill
                     priority
@@ -170,6 +171,9 @@ export default async function ReviewDetailPage({
         </div>
       </section>
 
+      {/* Gallery */}
+      <ReviewGallery images={review.gallery} title={review.title} />
+
       {/* Related */}
       {related.length > 0 && (
         <section className="border-t border-white/10 py-20 sm:py-28">
@@ -202,9 +206,9 @@ export default async function ReviewDetailPage({
                   className="group block border border-white/10 p-6 hover:border-white/30 transition-colors"
                 >
                   <div className="relative aspect-video overflow-hidden mb-5 bg-surface">
-                    {r.image ? (
+                    {r.backdrop || r.poster ? (
                       <Image
-                        src={r.image}
+                        src={(r.backdrop || r.poster) as string}
                         alt={r.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"

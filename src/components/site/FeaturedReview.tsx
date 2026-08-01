@@ -18,9 +18,9 @@ export default function FeaturedReview({ review }: { review: Review | null }) {
           <div className="lg:col-span-7 order-2 lg:order-1">
             <Link href={`/reviews/${review.slug}`} className="group relative block overflow-hidden">
               <div className="relative aspect-[2.35/1] overflow-hidden bg-surface">
-                {review.image ? (
+                {review.backdrop || review.poster ? (
                   <Image
-                    src={review.image}
+                    src={(review.backdrop || review.poster) as string}
                     alt={review.title}
                     fill
                     sizes="(max-width: 1024px) 100vw, 60vw"

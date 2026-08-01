@@ -24,9 +24,9 @@ export default function ReviewArchiveCard({
       className="group relative block border-r border-b border-white/10 p-6 sm:p-8 lg:p-10 overflow-hidden hover:bg-white/[0.02] transition-colors duration-500"
     >
       <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-surface">
-        {review.image ? (
+        {review.poster || review.backdrop ? (
           <Image
-            src={review.image}
+            src={(review.poster || review.backdrop) as string}
             alt={review.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
