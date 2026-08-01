@@ -1,4 +1,4 @@
-import { getLatestReviews, getArticles, getTopPicks } from "@/lib/api";
+import { getLatestReviews, getArticles, getTopPicks, getPostById } from "@/lib/api";
 import { postToReview, topPickToCard } from "@/lib/adapters";
 import Hero from "@/components/site/Hero";
 import Ticker from "@/components/site/Ticker";
@@ -20,8 +20,19 @@ export default async function Home() {
   ]);
 
   const reviews = posts.map(postToReview);
-  const featured = reviews[0] ?? null;
   const picks = topPicksRaw.map(topPickToCard);
+
+  // Enrich the featured review with its gallery (latest-reviews omits images).
+  const featuredPost = posts[0] ? await getPostById(posts[0].id) : null;
+  const featured = featuredPost ? postToReview(featuredPost) : reviews[0] ?? null;
+
+  // Slim "The Latest" index for the hero right column.
+  const latest = reviews.slice(0, 4).map((r) => ({
+    slug: r.slug,
+    title: r.title,
+    director: r.director,
+    year: r.year,
+  }));
 
   // Ticker: mix latest review + article titles for a live editorial feel.
   const tickerItems = [
@@ -39,7 +50,7 @@ export default async function Home() {
   return (
     <>
       <JsonLd data={websiteJsonLd()} />
-      <Hero nowPlaying={nowPlaying} />
+      <Hero nowPlaying={nowPlaying} latest={latest} />
       <Ticker items={tickerItems} />
       <FeaturedReview review={featured} />
       <TopPicksSection picks={picks} />

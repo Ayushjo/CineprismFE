@@ -33,6 +33,28 @@ export default function FeaturedReview({ review }: { review: Review | null }) {
                 <span>{review.year} · {review.language}</span>
               </div>
             </Link>
+
+            {/* Gallery strip — fills the space beneath the still */}
+            {review.gallery && review.gallery.length > 0 && (
+              <div className="mt-5 grid grid-cols-4 gap-2 sm:gap-3">
+                {review.gallery.slice(0, 4).map((src, i) => (
+                  <Link
+                    key={i}
+                    href={`/reviews/${review.slug}`}
+                    data-testid={`featured-gallery-${i}`}
+                    className="group relative aspect-[3/2] overflow-hidden bg-surface border border-white/10"
+                  >
+                    <Image
+                      src={src}
+                      alt={`${review.title} — still ${i + 1}`}
+                      fill
+                      sizes="(max-width: 1024px) 25vw, 150px"
+                      className="object-cover film-still"
+                    />
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="lg:col-span-5 lg:pt-14 order-1 lg:order-2">

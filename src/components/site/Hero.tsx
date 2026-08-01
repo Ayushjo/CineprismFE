@@ -1,12 +1,20 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { heroImage } from "@/lib/media";
 
 type NowPlaying = { title: string; director: string } | null;
+type LatestItem = { slug: string; title: string; director: string; year: number };
 
-export default function Hero({ nowPlaying }: { nowPlaying?: NowPlaying }) {
+export default function Hero({
+  nowPlaying,
+  latest = [],
+}: {
+  nowPlaying?: NowPlaying;
+  latest?: LatestItem[];
+}) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     const t = requestAnimationFrame(() => setMounted(true));
@@ -103,6 +111,45 @@ export default function Hero({ nowPlaying }: { nowPlaying?: NowPlaying }) {
           </div>
         </div>
       </div>
+
+      {/* The Latest — fills the right negative space (large screens) */}
+      {latest.length > 0 && (
+        <div
+          className={`hidden xl:block absolute right-10 top-1/2 -translate-y-1/2 z-10 w-[320px] transition-all duration-1000 delay-700 ${
+            mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
+          }`}
+        >
+          <p className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-5">
+            <span className="h-px w-8 bg-brand-gold" />
+            The Latest
+          </p>
+          <div className="border-t border-white/15">
+            {latest.map((r, i) => (
+              <Link
+                key={r.slug}
+                href={`/reviews/${r.slug}`}
+                data-testid={`hero-latest-${i}`}
+                className="group flex items-center gap-5 py-4 border-b border-white/15"
+              >
+                <span className="font-mono text-[10px] text-zinc-500 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-serif text-white text-lg leading-tight truncate group-hover:text-brand-gold transition-colors">
+                    {r.title}
+                  </h3>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-zinc-500 mt-1 truncate">
+                    {r.director} · {r.year}
+                  </p>
+                </div>
+                <span className="text-zinc-600 group-hover:text-white group-hover:translate-x-1 transition-all">
+                  →
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="pointer-events-none absolute top-0 left-6 sm:left-10 h-full w-px bg-white/5" />
       <div className="pointer-events-none absolute top-0 right-6 sm:right-10 h-full w-px bg-white/5" />
