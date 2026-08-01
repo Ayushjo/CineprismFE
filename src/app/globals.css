@@ -76,11 +76,12 @@
 /* Utility: film-still treatment (grayscale → color on hover) */
 @layer components {
   .film-still {
-    @apply grayscale transition-all duration-[1400ms];
-    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+    filter: grayscale(100%);
+    transition: filter 1400ms cubic-bezier(0.25, 1, 0.5, 1),
+      transform 1400ms cubic-bezier(0.25, 1, 0.5, 1);
   }
   .group:hover .film-still,
   .film-still:hover {
-    @apply grayscale-0;
+    filter: grayscale(0%);
   }
 }
