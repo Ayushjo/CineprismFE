@@ -78,15 +78,13 @@ export async function getRelatedPosts(id: string): Promise<Post[]> {
 }
 
 export async function getPostsByGenre(genre: string): Promise<Post[]> {
-  try {
-    const data = await apiFetch<{ genrePosts?: Post[]; posts?: Post[] }>(
-      `/posts/search/${encodeURIComponent(genre)}`,
-      { tags: ["posts", `genre:${genre}`] }
-    );
-    return data.genrePosts ?? data.posts ?? [];
-  } catch {
-    return [];
-  }
+  // The /posts/search/:genre endpoint is auth-gated; derive from the public
+  // all-posts list instead so genre pages work for anonymous visitors.
+  const needle = genre.trim().toLowerCase();
+  const posts = await getAllPosts().catch(() => []);
+  return posts.filter((p) =>
+    (p.genres ?? []).some((g) => g.trim().toLowerCase() === needle)
+  );
 }
 
 /* -------------------------------- Articles -------------------------------- */
