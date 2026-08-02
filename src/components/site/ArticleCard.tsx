@@ -71,7 +71,7 @@ export default function ArticleCard({
               {initials(article.author)}
             </span>
             <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-400">
-              {article.author || "The Cineprism"}
+              {article.author || "The Cinéprism"}
             </span>
           </div>
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500 group-hover:text-white transition-colors">

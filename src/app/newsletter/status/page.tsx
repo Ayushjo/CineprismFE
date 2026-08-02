@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import NewsletterStatus from "@/components/site/NewsletterStatus";
 
 export const metadata: Metadata = {
-  title: "Subscription Status — The Cineprism",
+  title: "Subscription Status — The Cinéprism",
   robots: { index: false, follow: false },
 };
 

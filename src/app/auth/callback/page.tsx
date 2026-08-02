@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import AuthCallback from "@/components/site/AuthCallback";
 
 export const metadata: Metadata = {
-  title: "Signing in… — The Cineprism",
+  title: "Signing in… — The Cinéprism",
   robots: { index: false, follow: false },
 };
 

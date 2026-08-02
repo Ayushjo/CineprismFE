@@ -8,7 +8,7 @@ export const revalidate = 300;
 export const metadata: Metadata = buildMetadata({
   title: "Articles",
   description:
-    "Long-form dispatches from The Cineprism — essays, listicles, obituaries and love letters to cinema.",
+    "Long-form dispatches from The Cinéprism — essays, listicles, obituaries and love letters to cinema.",
   path: "/articles",
 });
 

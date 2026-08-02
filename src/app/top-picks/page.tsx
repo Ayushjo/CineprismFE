@@ -3,13 +3,14 @@ import Image from "next/image";
 import { getTopPicks } from "@/lib/api";
 import { topPickToCard } from "@/lib/adapters";
 import { buildMetadata } from "@/lib/seo";
+import AuthGate from "@/components/site/AuthGate";
 
 export const revalidate = 600;
 
 export const metadata: Metadata = buildMetadata({
   title: "Top Picks",
   description:
-    "The Cineprism's curated shortlist — films worth losing sleep over, argued for and unapologetic.",
+    "The Cinéprism's curated shortlist — films worth losing sleep over, argued for and unapologetic.",
   path: "/top-picks",
 });
 
@@ -41,6 +42,7 @@ export default async function TopPicksPage() {
         {picks.length === 0 ? (
           <p className="mx-6 sm:mx-10 font-mono text-sm text-zinc-500">No picks yet.</p>
         ) : (
+          <AuthGate label="the full shortlist">
           <div className="mx-auto max-w-[1600px] px-6 sm:px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
             {picks.map((p, i) => (
               <div
@@ -85,6 +87,7 @@ export default async function TopPicksPage() {
               </div>
             ))}
           </div>
+          </AuthGate>
         )}
       </section>
     </div>

@@ -11,6 +11,7 @@ import ReviewBody from "@/components/content/ReviewBody";
 import RatingBreakdown from "@/components/content/RatingBreakdown";
 import ReviewGallery from "@/components/content/ReviewGallery";
 import ShareButton from "@/components/content/ShareButton";
+import AuthGate from "@/components/site/AuthGate";
 import JsonLd from "@/components/seo/JsonLd";
 import { reviewJsonLd } from "@/lib/jsonld";
 
@@ -36,7 +37,7 @@ export async function generateMetadata({
     image: review.image,
     type: "article",
     publishedTime: review.createdAt,
-    authors: ["The Cineprism"],
+    authors: ["The Cinéprism"],
     tags: review.genres,
   });
 }
@@ -138,7 +139,7 @@ export default async function ReviewDetailPage({
                 </div>
               </dl>
 
-              <ShareButton title={`${review.title} (${review.year}) — The Cineprism`} url={shareUrl} />
+              <ShareButton title={`${review.title} (${review.year}) — The Cinéprism`} url={shareUrl} />
             </div>
           </div>
         </div>
@@ -152,18 +153,19 @@ export default async function ReviewDetailPage({
           <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-gold mb-10">
             — The Review
           </p>
-          <ReviewBody body={review.body} />
-
-          {review.rating.length > 0 && <RatingBreakdown rating={review.rating} className="mt-16" />}
+          <AuthGate label="the full review">
+            <ReviewBody body={review.body} />
+            {review.rating.length > 0 && <RatingBreakdown rating={review.rating} className="mt-16" />}
+          </AuthGate>
 
           {/* Signature + bottom share */}
           <div className="mt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-t border-white/10 pt-10">
             <div className="flex items-center gap-4">
               <span className="h-px w-16 bg-white/30" />
-              <p className="font-serif italic text-zinc-500 text-lg">— The Cineprism</p>
+              <p className="font-serif italic text-zinc-500 text-lg">— The Cinéprism</p>
             </div>
             <ShareButton
-              title={`${review.title} (${review.year}) — The Cineprism`}
+              title={`${review.title} (${review.year}) — The Cinéprism`}
               url={shareUrl}
               variant="icon"
             />

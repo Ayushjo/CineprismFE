@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://thecineprism.com";
-export const SITE_NAME = "The Cineprism";
+export const SITE_NAME = "The Cinéprism";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`;
 export const TWITTER_HANDLE = "@TheCineprism";
 

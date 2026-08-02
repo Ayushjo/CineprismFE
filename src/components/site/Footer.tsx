@@ -12,7 +12,7 @@ export default function Footer() {
           aria-hidden="true"
           className="font-serif font-light text-white/[0.05] leading-[0.85] tracking-tighter uppercase select-none whitespace-nowrap text-[24vw] lg:text-[18vw]"
         >
-          Cineprism
+          Cinéprism
         </h2>
       </div>
 
@@ -20,7 +20,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 border-t border-white/10 pt-12">
           <div className="md:col-span-2">
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-4">
-              — The Cineprism
+              — The Cinéprism
             </p>
             <p className="font-serif italic text-zinc-300 text-lg leading-relaxed max-w-md">
               &ldquo;Cinema is a matter of what&rsquo;s in the frame and what&rsquo;s out.&rdquo;
@@ -68,7 +68,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-t border-white/10 pt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-600">
-          <p>© {new Date().getFullYear()} The Cineprism — All frames reserved.</p>
+          <p>© {new Date().getFullYear()} The Cinéprism — All frames reserved.</p>
           <p>Aspect Ratio 2.35 : 1 · Shot on 35mm memory.</p>
         </div>
       </div>

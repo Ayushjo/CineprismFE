@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import AuthSignIn from "@/components/site/AuthSignIn";
 
 export const metadata: Metadata = {
-  title: "Sign In — The Cineprism",
+  title: "Sign In — The Cinéprism",
   robots: { index: false, follow: false },
 };
 

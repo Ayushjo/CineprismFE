@@ -16,7 +16,7 @@ export const revalidate = 900; // 15 min — trending data refreshes periodicall
 export const metadata: Metadata = buildMetadata({
   title: "The Pulse — What the World Is Watching",
   description:
-    "The films moving the needle this week, read through The Cineprism lens — a ranked chart cross-referenced with our own reviews, plus dispatches from the industry.",
+    "The films moving the needle this week, read through The Cinéprism lens — a ranked chart cross-referenced with our own reviews, plus dispatches from the industry.",
   path: "/trending",
 });
 
@@ -126,7 +126,7 @@ export default async function TrendingPage() {
             </div>
             <p className="font-mono text-[11px] leading-relaxed text-zinc-500 max-w-sm lg:text-right">
               Ranked by global momentum, rated by the crowd — and flagged where the
-              Cineprism has already weighed in.
+              Cinéprism has already weighed in.
             </p>
           </div>
 

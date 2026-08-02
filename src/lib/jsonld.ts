@@ -11,6 +11,18 @@ const publisher = {
   logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
 };
 
+// Google-sanctioned paywall/gated-content markup: tells search engines the
+// content behind `.paywalled-content` requires sign-in (so full-content
+// indexing isn't treated as cloaking).
+const paywall = {
+  isAccessibleForFree: false,
+  hasPart: {
+    "@type": "WebPageElement",
+    isAccessibleForFree: false,
+    cssSelector: ".paywalled-content",
+  },
+};
+
 /** schema.org Review nested over a Movie, with our rating. */
 export function reviewJsonLd(review: Review, path: string) {
   return {
@@ -39,6 +51,7 @@ export function reviewJsonLd(review: Review, path: string) {
         }
       : {}),
     ...(review.tagline ? { reviewBody: review.tagline } : {}),
+    ...paywall,
   };
 }
 
@@ -57,6 +70,7 @@ export function articleJsonLd(article: Article, path: string, plainText: string)
     publisher,
     articleBody: plainText || undefined,
     wordCount: plainText ? plainText.trim().split(/\s+/).length : undefined,
+    ...paywall,
   };
 }
 

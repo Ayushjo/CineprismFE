@@ -9,6 +9,7 @@ import { buildMetadata, absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { editorialDate, readingTime, truncate } from "@/lib/utils";
 import BlockRenderer from "@/components/content/BlockRenderer";
 import ShareButton from "@/components/content/ShareButton";
+import AuthGate from "@/components/site/AuthGate";
 import ArticleCard from "@/components/site/ArticleCard";
 import JsonLd from "@/components/seo/JsonLd";
 import { articleJsonLd } from "@/lib/jsonld";
@@ -161,7 +162,9 @@ export default async function ArticleDetailPage({
       {/* Body — readable text column, images break out wider (see .article-grid) */}
       <div className="mx-auto max-w-[72rem] px-6 sm:px-10">
         {article.blocks?.length ? (
-          <BlockRenderer blocks={article.blocks} />
+          <AuthGate label="the full article">
+            <BlockRenderer blocks={article.blocks} />
+          </AuthGate>
         ) : (
           <p className="mx-auto max-w-[46rem] font-mono text-sm text-zinc-500">
             This article has no content yet.

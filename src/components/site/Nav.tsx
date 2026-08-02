@@ -50,14 +50,14 @@ export default function Nav() {
         <Link href="/" data-testid="nav-logo" className="group flex items-center gap-3">
           <Image
             src="/thecineprismlogo.jpg"
-            alt="The Cineprism"
+            alt="The Cinéprism"
             width={36}
             height={36}
             priority
             className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover ring-1 ring-white/20 shrink-0"
           />
           <span className="font-serif text-xl sm:text-2xl tracking-[0.02em] text-white leading-none">
-            The<span className="italic font-light"> Cineprism</span>
+            The<span className="italic font-light"> Cinéprism</span>
           </span>
         </Link>
 

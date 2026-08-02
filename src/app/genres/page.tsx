@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = buildMetadata({
   title: "Genres",
   description:
-    "Explore The Cineprism by grammar — reviews sorted across Sci-Fi, Thriller, Drama, Horror, Animation and more.",
+    "Explore The Cinéprism by grammar — reviews sorted across Sci-Fi, Thriller, Drama, Horror, Animation and more.",
   path: "/genres",
 });
 

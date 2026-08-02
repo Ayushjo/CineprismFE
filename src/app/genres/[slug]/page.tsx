@@ -6,6 +6,7 @@ import { getGenreMovies } from "@/lib/api";
 import { buildMetadata } from "@/lib/seo";
 import { GENRES, genreBySlug } from "@/lib/genres";
 import GenreMovieCard from "@/components/site/GenreMovieCard";
+import AuthGate from "@/components/site/AuthGate";
 
 export const revalidate = 1800;
 
@@ -25,7 +26,7 @@ export async function generateMetadata({
   if (!genre) return buildMetadata({ title: "Genre not found", path: `/genres/${slug}` });
   return buildMetadata({
     title: `${genre.name} — Curated Films`,
-    description: `A curated collection of ${genre.name.toLowerCase()} films from The Cineprism — ${genre.tagline}`,
+    description: `A curated collection of ${genre.name.toLowerCase()} films from The Cinéprism — ${genre.tagline}`,
     path: `/genres/${genre.slug}`,
   });
 }
@@ -76,11 +77,13 @@ export default async function GenreDetailPage({
             No {genre.name.toLowerCase()} films in the collection yet — check back soon.
           </p>
         ) : (
-          <div className="mx-auto max-w-[1600px] px-6 sm:px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 lg:gap-6">
-            {movies.map((m, i) => (
-              <GenreMovieCard key={m.id} movie={m} priority={i < 5} />
-            ))}
-          </div>
+          <AuthGate label={`the full ${genre.name} collection`}>
+            <div className="mx-auto max-w-[1600px] px-6 sm:px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 lg:gap-6">
+              {movies.map((m, i) => (
+                <GenreMovieCard key={m.id} movie={m} priority={i < 5} />
+              ))}
+            </div>
+          </AuthGate>
         )}
       </section>
     </div>

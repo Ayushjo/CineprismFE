@@ -9,7 +9,7 @@ export const revalidate = 300;
 export const metadata: Metadata = buildMetadata({
   title: "Reviews",
   description:
-    "The complete archive of film reviews from The Cineprism — close-readings of cinema, sorted by most recent.",
+    "The complete archive of film reviews from The Cinéprism — close-readings of cinema, sorted by most recent.",
   path: "/reviews",
 });
 
