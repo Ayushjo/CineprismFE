@@ -90,7 +90,7 @@ export default function Hero({
         <div className="mt-20 sm:mt-32 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-10">
           <a
             href="#featured"
-            className="group flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
+            className="group hidden sm:flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
           >
             <span className="relative flex h-8 w-[1px] bg-zinc-600 overflow-hidden">
               <span className="absolute inset-x-0 top-0 h-3 bg-white animate-scrolldown" />
@@ -151,8 +151,8 @@ export default function Hero({
         </div>
       )}
 
-      <div className="pointer-events-none absolute top-0 left-6 sm:left-10 h-full w-px bg-white/5" />
-      <div className="pointer-events-none absolute top-0 right-6 sm:right-10 h-full w-px bg-white/5" />
+      <div className="hidden sm:block pointer-events-none absolute top-0 left-10 h-full w-px bg-white/5" />
+      <div className="hidden sm:block pointer-events-none absolute top-0 right-10 h-full w-px bg-white/5" />
     </section>
   );
 }
