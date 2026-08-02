@@ -90,7 +90,7 @@ export default function Nav() {
         </Link>
 
         {/* Center links */}
-        <nav aria-label="Primary" className="hidden md:flex items-center gap-10">
+        <nav aria-label="Primary" className="hidden lg:flex items-center gap-6 xl:gap-9">
           {links.map((l) => (
             <Link
               key={l.label}
@@ -108,7 +108,7 @@ export default function Nav() {
         {/* Right */}
         <div className="flex items-center gap-4">
           {/* Socials */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-4">
             {socials.map(({ label, href, Icon }) => (
               <a
                 key={label}
@@ -126,7 +126,7 @@ export default function Nav() {
 
           {user ? (
             <div className="flex items-center gap-3">
-              <span className="hidden sm:inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-300">
+              <span className="hidden xl:inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-300">
                 {user.profilePicture ? (
                   <Image
                     src={user.profilePicture}
@@ -162,7 +162,7 @@ export default function Nav() {
             aria-label="Toggle menu"
             data-testid="nav-menu-toggle"
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden flex flex-col gap-[5px] items-end w-8 h-8 justify-center"
+            className="lg:hidden flex flex-col gap-[5px] items-end w-8 h-8 justify-center"
           >
             <span className={`block h-px bg-white transition-all ${open ? "w-6 rotate-45 translate-y-[6px]" : "w-6"}`} />
             <span className={`block h-px bg-white transition-all ${open ? "opacity-0" : "w-4"}`} />
@@ -175,7 +175,7 @@ export default function Nav() {
       {open && (
         <div
           data-testid="nav-mobile-menu"
-          className="md:hidden border-t border-white/10 bg-black/90 backdrop-blur-xl"
+          className="lg:hidden border-t border-white/10 bg-black/90 backdrop-blur-xl"
         >
           <nav className="px-6 py-6 flex flex-col gap-5">
             {links.map((l) => (
