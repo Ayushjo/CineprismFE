@@ -175,4 +175,20 @@ export async function getTrendingNews(): Promise<any[]> {
   }
 }
 
+/* -------------------------------- Quotes ---------------------------------- */
+
+export type Quote = { id: string; quote: string; author: string; rank: number };
+
+export async function getQuotes(): Promise<Quote[]> {
+  try {
+    const data = await apiFetch<{ quotes: Quote[] }>("/admin/fetch-quotes", {
+      revalidate: 3600,
+      tags: ["quotes"],
+    });
+    return data.quotes ?? [];
+  } catch {
+    return [];
+  }
+}
+
 export { API_BASE };

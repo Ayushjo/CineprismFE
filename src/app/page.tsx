@@ -1,4 +1,4 @@
-import { getLatestReviews, getArticles, getTopPicks, getPostById } from "@/lib/api";
+import { getLatestReviews, getArticles, getTopPicks, getPostById, getQuotes } from "@/lib/api";
 import { postToReview, topPickToCard } from "@/lib/adapters";
 import Hero from "@/components/site/Hero";
 import Ticker from "@/components/site/Ticker";
@@ -6,6 +6,7 @@ import FeaturedReview from "@/components/site/FeaturedReview";
 import TopPicksSection from "@/components/site/TopPicksSection";
 import GenresSection from "@/components/site/GenresSection";
 import RecentReviews from "@/components/site/RecentReviews";
+import QuoteBand from "@/components/site/QuoteBand";
 import NewsletterCTA from "@/components/site/NewsletterCTA";
 import JsonLd from "@/components/seo/JsonLd";
 import { websiteJsonLd } from "@/lib/jsonld";
@@ -13,11 +14,18 @@ import { websiteJsonLd } from "@/lib/jsonld";
 export const revalidate = 300;
 
 export default async function Home() {
-  const [posts, articles, topPicksRaw] = await Promise.all([
+  const [posts, articles, topPicksRaw, quotes] = await Promise.all([
     getLatestReviews(),
     getArticles().catch(() => []),
     getTopPicks(),
+    getQuotes(),
   ]);
+
+  // Rotate the featured quote daily so the home page feels alive.
+  const quote =
+    quotes.length > 0
+      ? quotes[Math.floor(Date.now() / 86400000) % quotes.length]
+      : null;
 
   const reviews = posts.map(postToReview);
   const picks = topPicksRaw.map(topPickToCard);
@@ -54,6 +62,7 @@ export default async function Home() {
       <Ticker items={tickerItems} />
       <FeaturedReview review={featured} />
       <TopPicksSection picks={picks} />
+      <QuoteBand quote={quote} />
       <GenresSection />
       <RecentReviews reviews={reviews} />
       <NewsletterCTA />
