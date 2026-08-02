@@ -6,6 +6,29 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
+const socials = [
+  { label: "X", href: "https://x.com/thecineprism", Icon: XIcon },
+  { label: "Instagram", href: "https://www.instagram.com/thecineprism", Icon: InstagramIcon },
+];
+
 const links = [
   { label: "Reviews", to: "/reviews" },
   { label: "Top Picks", to: "/top-picks" },
@@ -78,16 +101,24 @@ export default function Nav() {
         </nav>
 
         {/* Right */}
-        <div className="flex items-center gap-3">
-          <a
-            href="https://x.com/TheCineprism"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-testid="nav-x-link"
-            className="hidden lg:inline-flex font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-colors duration-300"
-          >
-            @TheCineprism ↗
-          </a>
+        <div className="flex items-center gap-4">
+          {/* Socials */}
+          <div className="hidden lg:flex items-center gap-4">
+            {socials.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                data-testid={`nav-social-${label.toLowerCase()}`}
+                className="text-zinc-400 hover:text-white transition-colors duration-300"
+              >
+                <Icon className="h-[15px] w-[15px]" />
+              </a>
+            ))}
+          </div>
+
           {user ? (
             <div className="flex items-center gap-3">
               <span className="hidden sm:inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-300">
@@ -112,23 +143,14 @@ export default function Nav() {
               </button>
             </div>
           ) : (
-            <>
-              <Link
-                href="/auth"
-                data-testid="nav-signin-btn"
-                className="hidden sm:inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-300 hover:text-white transition-colors duration-300"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/auth"
-                data-testid="nav-subscribe-btn"
-                className="inline-flex items-center gap-2 border border-white/20 hover:border-white bg-transparent px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
-              >
-                <span>Sign In</span>
-                <span aria-hidden="true">→</span>
-              </Link>
-            </>
+            <Link
+              href="/auth"
+              data-testid="nav-signin-btn"
+              className="inline-flex items-center gap-2 border border-white/20 hover:border-white bg-transparent px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
+            >
+              <span>Sign In</span>
+              <span aria-hidden="true">→</span>
+            </Link>
           )}
           <button
             type="button"

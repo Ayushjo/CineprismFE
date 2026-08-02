@@ -50,19 +50,19 @@ export default function Footer() {
             </p>
             <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.2em] text-zinc-300">
               <li>
-                <a
-                  href="https://x.com/TheCineprism"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-testid="footer-x-link"
-                  className="hover:text-white transition-colors"
-                >
-                  X · @TheCineprism ↗
+                <a href="https://x.com/thecineprism" target="_blank" rel="noopener noreferrer" data-testid="footer-x-link" className="hover:text-white transition-colors">
+                  X · @thecineprism ↗
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/thecineprism" target="_blank" rel="noopener noreferrer" data-testid="footer-instagram-link" className="hover:text-white transition-colors">
+                  Instagram ↗
                 </a>
               </li>
               <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
               <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
               <li><Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition-colors">Terms</Link></li>
             </ul>
           </div>
         </div>
