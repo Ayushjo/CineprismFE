@@ -10,6 +10,7 @@ const errorMessages: Record<string, string> = {
   oauth_failed: "Google sign-in was cancelled or failed.",
   no_token: "No session was returned. Please try again.",
   callback_failed: "We couldn't complete sign-in. Please try again.",
+  admin_required: "Admin access required — sign in with an admin account.",
 };
 
 export default function AuthSignIn() {
