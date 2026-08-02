@@ -17,6 +17,9 @@ const LANGUAGES = [
   "Norwegian", "Danish", "Finnish",
 ];
 
+const STREAMING = ["Netflix", "Prime Video", "Disney+ Hotstar", "JioCinema", "Apple TV+", "Cinema Halls", "In Theatres", "YouTube"];
+const RATING_PRESETS = ["Story", "Screenplay", "Direction", "Acting", "Cinematography", "Music", "Editing"];
+
 type Rating = { category: string; score: number };
 type PostLite = { id: string; title: string };
 
@@ -109,6 +112,13 @@ export default function CreatePostPage() {
           <div>
             <label className={labelCls}>Streaming at</label>
             <input className={inputCls} value={form.streamingAt} onChange={(e) => set("streamingAt", e.target.value)} placeholder="e.g. Netflix / Cinema Halls" />
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {STREAMING.map((s) => (
+                <button key={s} type="button" onClick={() => set("streamingAt", s)} className={`px-2 py-1 rounded text-[11px] border transition-colors ${form.streamingAt === s ? "border-emerald-500 text-white bg-emerald-500/15" : "border-slate-700 text-slate-400 hover:border-slate-500"}`}>
+                  {s}
+                </button>
+              ))}
+            </div>
           </div>
           <div>
             <label className={labelCls}>Year</label>
@@ -154,6 +164,28 @@ export default function CreatePostPage() {
         {/* Ratings */}
         <div>
           <label className={labelCls}>Rating categories</label>
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {RATING_PRESETS.map((p) => {
+              const exists = ratings.some((r) => r.category.toLowerCase() === p.toLowerCase());
+              return (
+                <button
+                  key={p}
+                  type="button"
+                  disabled={exists}
+                  onClick={() =>
+                    setRatings((prev) => {
+                      const firstEmpty = prev.findIndex((r) => !r.category.trim());
+                      if (firstEmpty >= 0) return prev.map((r, i) => (i === firstEmpty ? { ...r, category: p } : r));
+                      return [...prev, { category: p, score: 0 }];
+                    })
+                  }
+                  className={`px-2 py-1 rounded text-[11px] border transition-colors ${exists ? "border-slate-800 text-slate-600 cursor-not-allowed" : "border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-white"}`}
+                >
+                  + {p}
+                </button>
+              );
+            })}
+          </div>
           <div className="space-y-3">
             {ratings.map((r, i) => (
               <div key={i} className="flex items-center gap-3">

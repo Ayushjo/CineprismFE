@@ -3,6 +3,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { adminApi } from "@/lib/adminApi";
+import Dropzone from "@/components/admin/Dropzone";
 
 const GENRES = [
   "Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary",
@@ -17,26 +18,25 @@ export default function AddTopPicksPage() {
   const [title, setTitle] = useState("");
   const [year, setYear] = useState("");
   const [genre, setGenre] = useState("Drama");
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
   const [busy, setBusy] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) return toast.error("Title is required.");
-    if (!file) return toast.error("A poster is required.");
+    if (files.length === 0) return toast.error("A poster is required.");
     const fd = new FormData();
     fd.append("title", title.trim());
     fd.append("year", year || String(new Date().getFullYear()));
     fd.append("genre", genre);
-    fd.append("file", file);
+    fd.append("file", files[0]);
 
     setBusy(true);
     const t = toast.loading("Adding pick…");
     try {
       await adminApi.post("/admin/create-top-picks", fd, { headers: { "Content-Type": "multipart/form-data" } });
       toast.success("Top pick added.", { id: t });
-      setTitle(""); setYear(""); setFile(null); setPreview("");
+      setTitle(""); setYear(""); setFiles([]);
     } catch (err) {
       toast.error((err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Failed.", { id: t });
     } finally {
@@ -69,9 +69,7 @@ export default function AddTopPicksPage() {
         </div>
         <div>
           <label className={labelCls}>Poster (vertical)</label>
-          <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0] || null; setFile(f); setPreview(f ? URL.createObjectURL(f) : ""); }} className="text-sm text-slate-400 file:mr-3 file:rounded-md file:border-0 file:bg-slate-800 file:px-4 file:py-2 file:text-slate-200" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          {preview && <img src={preview} alt="" className="mt-3 h-40 w-auto rounded-md border border-slate-800 object-cover" />}
+          <Dropzone files={files} onChange={setFiles} aspect="aspect-[2/3]" />
         </div>
         <button type="submit" disabled={busy} className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold px-6 py-3 rounded-md text-sm transition-colors disabled:opacity-50">
           {busy ? "Adding…" : "Add Top Pick"}

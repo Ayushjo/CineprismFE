@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { adminApi } from "@/lib/adminApi";
+import Dropzone from "@/components/admin/Dropzone";
 
 type PostLite = { id: string; title: string; year?: number };
 
@@ -37,7 +38,6 @@ export default function PostImageUploader({
     [posts, search]
   );
   const selected = posts.find((p) => p.id === postId);
-  const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -86,21 +86,7 @@ export default function PostImageUploader({
           <label className="block text-xs uppercase tracking-wider text-slate-400 mb-2">
             {multiple ? "Images" : "Image"}
           </label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple={multiple}
-            onChange={(e) => setFiles(Array.from(e.target.files || []))}
-            className="text-sm text-slate-400 file:mr-3 file:rounded-md file:border-0 file:bg-slate-800 file:px-4 file:py-2 file:text-slate-200"
-          />
-          {previews.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {previews.map((src, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} src={src} alt="" className="h-24 w-auto rounded-md border border-slate-800 object-cover" />
-              ))}
-            </div>
-          )}
+          <Dropzone files={files} onChange={setFiles} multiple={multiple} />
         </div>
 
         <button type="submit" disabled={busy} className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold px-6 py-3 rounded-md text-sm transition-colors disabled:opacity-50">
