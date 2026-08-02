@@ -74,7 +74,7 @@ export default function Hero({
           >
             <span className="block">The</span>
             <span className="block italic font-extralight text-white/95 -mt-2 sm:-mt-4">
-              Cine<span className="text-brand-gold">prism</span>
+              Ciné<span className="text-brand-gold">prism</span>
             </span>
           </h1>
 
