@@ -115,7 +115,7 @@ export default function Hero({
       {/* The Latest — fills the right negative space (large screens) */}
       {latest.length > 0 && (
         <div
-          className={`hidden xl:block absolute right-10 top-1/2 -translate-y-1/2 z-10 w-[320px] transition-all duration-1000 delay-700 ${
+          className={`hidden lg:block absolute right-10 top-1/2 -translate-y-1/2 z-10 w-[300px] xl:w-[320px] transition-all duration-1000 delay-700 ${
             mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
           }`}
         >
