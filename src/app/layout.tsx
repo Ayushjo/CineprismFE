@@ -4,7 +4,7 @@ import "./globals.css";
 import GrainOverlay from "@/components/site/GrainOverlay";
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
-import LenisProvider from "@/providers/LenisProvider";
+import Chrome from "@/components/site/Chrome";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, TWITTER_HANDLE } from "@/lib/seo";
 
@@ -65,12 +65,9 @@ export default function RootLayout({
     >
       <body className="bg-ink text-white antialiased selection:bg-brand-gold selection:text-black">
         <AuthProvider>
-          <LenisProvider>
-            <GrainOverlay />
-            <Nav />
-            <main>{children}</main>
-            <Footer />
-          </LenisProvider>
+          <Chrome grain={<GrainOverlay />} nav={<Nav />} footer={<Footer />}>
+            {children}
+          </Chrome>
         </AuthProvider>
       </body>
     </html>
