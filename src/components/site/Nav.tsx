@@ -59,6 +59,11 @@ export default function Nav() {
   const isActive = (to: string) =>
     to === "/" ? pathname === "/" : pathname.startsWith(to);
 
+  const signInHref =
+    pathname && !pathname.startsWith("/auth")
+      ? `/auth?returnTo=${encodeURIComponent(pathname)}`
+      : "/auth";
+
   return (
     <header
       data-testid="site-nav"
@@ -144,7 +149,7 @@ export default function Nav() {
             </div>
           ) : (
             <Link
-              href="/auth"
+              href={signInHref}
               data-testid="nav-signin-btn"
               className="inline-flex items-center gap-2 border border-white/20 hover:border-white bg-transparent px-4 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors duration-300 hover:bg-white hover:text-black"
             >
@@ -183,7 +188,7 @@ export default function Nav() {
               </Link>
             ))}
             <Link
-              href="/auth"
+              href={signInHref}
               className="font-mono text-xs uppercase tracking-[0.3em] text-brand-gold"
             >
               Sign In / Sign Up

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 
 /**
@@ -19,7 +19,8 @@ export default function AuthGate({
   children: React.ReactNode;
   label?: string;
 }) {
-  const { user, loading } = useAuth();
+  const { user, loading, loginWithGoogle } = useAuth();
+  const pathname = usePathname();
 
   // Authenticated (or still checking) → full content, ungated.
   if (user || loading) {
@@ -48,13 +49,14 @@ export default function AuthGate({
           The Cinéprism is free — one tap with Google, no passwords, and you keep
           your seat in the dark.
         </p>
-        <Link
-          href="/auth"
+        <button
+          type="button"
+          onClick={() => loginWithGoogle(pathname)}
           data-testid="gate-signin"
           className="inline-flex items-center gap-3 border border-white/25 bg-white text-black hover:bg-transparent hover:text-white hover:border-white px-8 py-4 font-mono text-[11px] uppercase tracking-[0.28em] transition-colors"
         >
           Continue with Google →
-        </Link>
+        </button>
       </div>
     </div>
   );

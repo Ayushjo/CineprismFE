@@ -4,6 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { adminApi } from "@/lib/adminApi";
 import Dropzone from "@/components/admin/Dropzone";
+import ArticlePreview from "@/components/admin/ArticlePreview";
 import { Type, Heading, Image as ImageIcon, List, Quote, Minus, ClipboardPaste } from "lucide-react";
 
 type BlockType = "PARAGRAPH" | "HEADING" | "IMAGE" | "LIST" | "QUOTE" | "DIVIDER";
@@ -43,6 +44,7 @@ export default function CreateArticlePage() {
   const [blocks, setBlocks] = useState<Block[]>([newBlock("PARAGRAPH")]);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteText, setPasteText] = useState("");
+  const [view, setView] = useState<"edit" | "preview">("edit");
   const [submitting, setSubmitting] = useState(false);
 
   const patch = (id: string, p: Partial<Block>) => setBlocks((prev) => prev.map((b) => (b.id === id ? { ...b, ...p } : b)));
@@ -106,11 +108,23 @@ export default function CreateArticlePage() {
   return (
     <div className="pb-28">
       <div className="p-8 max-w-3xl">
-        <header className="mb-8">
-          <h1 className="text-2xl font-semibold text-white">Create Article</h1>
-          <p className="text-slate-400 text-sm mt-1">Write, drop in images, and publish.</p>
+        <header className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-white">Create Article</h1>
+            <p className="text-slate-400 text-sm mt-1">Write, drop in images, and publish.</p>
+          </div>
+          <div className="flex items-center rounded-md border border-slate-700 overflow-hidden shrink-0">
+            {(["edit", "preview"] as const).map((v) => (
+              <button key={v} type="button" onClick={() => setView(v)} className={`px-4 py-2 text-xs uppercase tracking-wider transition-colors ${view === v ? "bg-emerald-500 text-slate-950 font-semibold" : "text-slate-400 hover:text-white"}`}>
+                {v}
+              </button>
+            ))}
+          </div>
         </header>
 
+        {view === "preview" ? (
+          <ArticlePreview title={meta.title} deck={meta.shortDescription} author={meta.author} mainImage={mainImage[0] || null} blocks={blocks} />
+        ) : (
         <div className="space-y-8">
           {/* Meta */}
           <section className="space-y-5">
@@ -226,6 +240,7 @@ export default function CreateArticlePage() {
             </div>
           </section>
         </div>
+        )}
       </div>
 
       {/* Sticky publish bar */}

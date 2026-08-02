@@ -1,19 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 
 /** Gates the admin section to signed-in ADMIN users. */
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (loading) return;
-    if (!user) router.replace("/auth?error=admin_required");
+    if (!user) router.replace(`/auth?error=admin_required&returnTo=${encodeURIComponent(pathname || "/admin")}`);
     else if (user.role !== "ADMIN") router.replace("/");
-  }, [user, loading, router]);
+  }, [user, loading, router, pathname]);
 
   if (loading || !user || user.role !== "ADMIN") {
     return (

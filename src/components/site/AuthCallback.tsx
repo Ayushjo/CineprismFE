@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "@/providers/AuthProvider";
+import { useAuth, RETURN_TO_KEY } from "@/providers/AuthProvider";
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -22,7 +22,17 @@ export default function AuthCallback() {
       return;
     }
     setAuthToken(token)
-      .then(() => router.replace("/"))
+      .then(() => {
+        let dest = "/";
+        try {
+          const rt = localStorage.getItem(RETURN_TO_KEY);
+          localStorage.removeItem(RETURN_TO_KEY);
+          if (rt && rt.startsWith("/") && !rt.startsWith("//")) dest = rt;
+        } catch {
+          /* ignore */
+        }
+        router.replace(dest);
+      })
       .catch(() => setFailed(true));
   }, [params, router, setAuthToken]);
 

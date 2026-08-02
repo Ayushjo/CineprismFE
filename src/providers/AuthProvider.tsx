@@ -5,11 +5,12 @@ import type { User } from "@/types/content";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.thecineprism.com/api/v1";
 const TOKEN_KEY = "cineprism_auth_token";
+export const RETURN_TO_KEY = "cineprism_return_to";
 
 type AuthState = {
   user: User | null;
   loading: boolean;
-  loginWithGoogle: () => void;
+  loginWithGoogle: (returnTo?: string) => void;
   logout: () => void;
   setAuthToken: (token: string) => Promise<void>;
 };
@@ -46,7 +47,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const loginWithGoogle = useCallback(() => {
+  const loginWithGoogle = useCallback((returnTo?: string) => {
+    // Persist where to return after the OAuth round-trip (survives on the
+    // localhost:3000 origin across the Google redirect).
+    if (typeof window !== "undefined") {
+      const dest = returnTo || window.location.pathname + window.location.search;
+      if (dest && !dest.startsWith("/auth")) localStorage.setItem(RETURN_TO_KEY, dest);
+    }
     window.location.href = `${API}/auth/google`;
   }, []);
 

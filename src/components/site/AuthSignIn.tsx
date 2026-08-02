@@ -18,6 +18,7 @@ export default function AuthSignIn() {
   const params = useSearchParams();
   const { user, loading, loginWithGoogle } = useAuth();
   const error = params.get("error");
+  const returnTo = params.get("returnTo") || undefined;
 
   // Already signed in → send home.
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function AuthSignIn() {
 
       <button
         type="button"
-        onClick={loginWithGoogle}
+        onClick={() => loginWithGoogle(returnTo)}
         data-testid="google-signin-btn"
         className="group w-full inline-flex items-center justify-center gap-4 border border-white/25 hover:border-white bg-transparent hover:bg-white px-6 py-5 font-mono text-[11px] uppercase tracking-[0.28em] text-white hover:text-black transition-colors"
       >
