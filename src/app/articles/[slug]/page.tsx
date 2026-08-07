@@ -73,6 +73,10 @@ export default async function ArticleDetailPage({
   const date = editorialDate(article.publishedAt || article.createdAt);
   const minutes = readingTime(plain);
   const shareUrl = absoluteUrl(`/articles/${article.slug}`);
+  // Canonical URL stays for SEO/JSON-LD above; humans share the short link.
+  const shortShareUrl = article.shortId
+    ? absoluteUrl(`/s/${article.shortId}`)
+    : shareUrl;
 
   const others = (await getArticles())
     .filter((a) => a.slug !== article.slug && a.published !== false)
@@ -138,7 +142,7 @@ export default async function ArticleDetailPage({
                 </p>
               </div>
             </div>
-            <ShareButton title={article.title} url={shareUrl} variant="icon" />
+            <ShareButton title={article.title} url={shortShareUrl} variant="icon" />
           </div>
         </div>
       </header>
@@ -177,7 +181,7 @@ export default async function ArticleDetailPage({
             <span className="h-px w-16 bg-white/30" />
             <p className="font-serif italic text-zinc-500 text-lg">— {article.author || SITE_NAME}</p>
           </div>
-          <ShareButton title={article.title} url={shareUrl} />
+          <ShareButton title={article.title} url={shortShareUrl} />
         </div>
       </div>
 

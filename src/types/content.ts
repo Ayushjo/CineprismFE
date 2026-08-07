@@ -16,6 +16,7 @@ export interface PostImage {
 /** Backend `Post` (a review). */
 export interface Post {
   id: string;
+  shortId?: string | null; // short-link code (e.g. /s/<shortId>)
   title: string;
   content: string; // plain text, paragraphs separated by blank lines
   genres: string[];
@@ -40,6 +41,7 @@ export interface Post {
 export interface Review {
   slug: string;
   id: string;
+  shortId?: string | null; // short-link code (e.g. /s/<shortId>)
   title: string;
   year: number;
   genres: string[];
@@ -76,6 +78,7 @@ export interface ContentBlock {
 
 export interface Article {
   id: string;
+  shortId?: string | null; // short-link code (e.g. /s/<shortId>)
   title: string;
   shortDescription: string;
   slug: string;

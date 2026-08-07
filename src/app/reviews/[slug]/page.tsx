@@ -58,6 +58,10 @@ export default async function ReviewDetailPage({
   const review = postToReview(post);
   const related = (await getRelatedPosts(post.id)).map(postToReview).slice(0, 3);
   const shareUrl = absoluteUrl(`/reviews/${review.slug}`);
+  // Canonical URL stays for SEO/JSON-LD; humans share the short link.
+  const shortShareUrl = review.shortId
+    ? absoluteUrl(`/s/${review.shortId}`)
+    : shareUrl;
 
   return (
     <div data-testid="review-detail-page">
@@ -139,7 +143,7 @@ export default async function ReviewDetailPage({
                 </div>
               </dl>
 
-              <ShareButton title={`${review.title} (${review.year}) — The Cinéprism`} url={shareUrl} />
+              <ShareButton title={`${review.title} (${review.year}) — The Cinéprism`} url={shortShareUrl} />
             </div>
           </div>
         </div>
@@ -166,7 +170,7 @@ export default async function ReviewDetailPage({
             </div>
             <ShareButton
               title={`${review.title} (${review.year}) — The Cinéprism`}
-              url={shareUrl}
+              url={shortShareUrl}
               variant="icon"
             />
           </div>

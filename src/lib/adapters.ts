@@ -54,6 +54,7 @@ export function postToReview(post: Post): Review {
   return {
     slug: reviewSlug(post),
     id: post.id,
+    shortId: post.shortId ?? null,
     title: post.title,
     year: post.year,
     genres: Array.isArray(post.genres) ? post.genres : [],
