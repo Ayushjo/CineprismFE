@@ -24,26 +24,15 @@ export default async function ReviewsPage() {
         <div className="mx-auto max-w-[1600px] px-6 sm:px-10">
           <div className="flex items-center gap-4 mb-8">
             <span className="h-px w-12 bg-brand-gold" />
-            <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-zinc-500">
-              The Complete Archive
-            </p>
           </div>
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8">
-            <h1
-              data-testid="reviews-page-title"
-              className="font-serif font-light text-white text-6xl sm:text-7xl lg:text-[9vw] leading-[0.88] tracking-[-0.02em]"
-            >
-              Reviews
-              <span className="italic text-zinc-500">, close-read</span>
-              <span className="text-brand-gold">.</span>
-            </h1>
-            <div className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500 lg:text-right">
-              <p className="mb-2">
-                {String(reviews.length).padStart(3, "0")} Reviews on file
-              </p>
-              <p>Sorted — Most Recent</p>
-            </div>
-          </div>
+          <h1
+            data-testid="reviews-page-title"
+            className="font-serif font-light text-white text-6xl sm:text-7xl lg:text-[9vw] leading-[0.88] tracking-[-0.02em]"
+          >
+            Reviews
+            <span className="italic text-zinc-500">, close-read</span>
+            <span className="text-brand-gold">.</span>
+          </h1>
         </div>
       </section>
 

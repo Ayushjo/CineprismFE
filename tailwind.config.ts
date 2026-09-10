@@ -7,6 +7,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         serif: ["var(--font-cormorant)", "Cormorant Garamond", "serif"],
+        display: ["var(--font-instrument)", "Instrument Serif", "serif"],
         mono: ["var(--font-plex-mono)", "IBM Plex Mono", "ui-monospace", "monospace"],
         sans: ["var(--font-inter)", "Inter", "ui-sans-serif", "system-ui"],
       },

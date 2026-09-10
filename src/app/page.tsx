@@ -34,14 +34,6 @@ export default async function Home() {
   const featuredPost = posts[0] ? await getPostById(posts[0].id) : null;
   const featured = featuredPost ? postToReview(featuredPost) : reviews[0] ?? null;
 
-  // Slim "The Latest" index for the hero right column.
-  const latest = reviews.slice(0, 4).map((r) => ({
-    slug: r.slug,
-    title: r.title,
-    director: r.director,
-    year: r.year,
-  }));
-
   // Ticker: mix latest review + article titles for a live editorial feel.
   const tickerItems = [
     "Latest Dispatch",
@@ -51,14 +43,12 @@ export default async function Home() {
     "A Journal of Serious Film",
   ];
 
-  const nowPlaying = featured
-    ? { title: featured.title, director: featured.director }
-    : undefined;
+  const nowPlaying = featured ? { title: featured.title } : undefined;
 
   return (
     <>
       <JsonLd data={websiteJsonLd()} />
-      <Hero nowPlaying={nowPlaying} latest={latest} />
+      <Hero nowPlaying={nowPlaying} />
       <Ticker items={tickerItems} />
       <FeaturedReview review={featured} />
       <TopPicksSection picks={picks} />

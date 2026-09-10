@@ -23,18 +23,10 @@ export default async function TopPicksPage() {
         <div className="mx-auto max-w-[1600px] px-6 sm:px-10">
           <div className="flex items-center gap-4 mb-8">
             <span className="h-px w-12 bg-gold" />
-            <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-zinc-500">
-              The Prism&rsquo;s Choice
-            </p>
           </div>
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8">
-            <h1 className="font-serif font-light text-white text-6xl sm:text-7xl lg:text-[9vw] leading-[0.88] tracking-[-0.02em]">
-              Top Picks<span className="text-brand-gold">.</span>
-            </h1>
-            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500 lg:text-right">
-              {String(picks.length).padStart(3, "0")} films on the shortlist
-            </p>
-          </div>
+          <h1 className="font-serif font-light text-white text-6xl sm:text-7xl lg:text-[9vw] leading-[0.88] tracking-[-0.02em]">
+            Top Picks<span className="text-brand-gold">.</span>
+          </h1>
         </div>
       </section>
 

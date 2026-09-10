@@ -6,7 +6,6 @@ import {
   buildReviewIndex,
   toTrendingItem,
   toNewsItem,
-  releaseSignal,
 } from "@/lib/tmdb";
 import RisingChart from "@/components/trending/RisingChart";
 import TheWire from "@/components/trending/TheWire";
@@ -44,7 +43,6 @@ export default async function TrendingPage() {
   const news = rawNews.map(toNewsItem);
 
   const hero = movies[0];
-  const reviewedCount = movies.filter((m) => m.reviewSlug).length;
   const updated = updatedAgo(rawMovies[0]?.last_updated);
 
   return (
@@ -82,28 +80,13 @@ export default async function TrendingPage() {
           </h1>
 
           {hero ? (
-            <div className="mt-10 flex flex-col sm:flex-row sm:items-end gap-6 sm:gap-12">
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-2">
-                  № 01 — Trending now
-                </p>
-                <p className="font-serif italic text-white text-2xl sm:text-3xl">
-                  {hero.title} {hero.year ? <span className="text-zinc-500">({hero.year})</span> : null}
-                </p>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.28em] text-gold">
-                  {[hero.genres.join(" · "), releaseSignal(hero.releaseDate)].filter(Boolean).join(" — ")}
-                </p>
-              </div>
-              <div className="h-px sm:h-12 w-24 sm:w-px bg-white/15" aria-hidden />
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-1">
-                  Reviewed by us
-                </p>
-                <p className="font-serif text-white text-2xl sm:text-3xl">
-                  {String(reviewedCount).padStart(2, "0")}{" "}
-                  <span className="text-zinc-600 text-lg">of {String(movies.length).padStart(2, "0")}</span>
-                </p>
-              </div>
+            <div className="mt-10">
+              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-2">
+                № 01 — Trending now
+              </p>
+              <p className="font-serif italic text-white text-2xl sm:text-3xl">
+                {hero.title} {hero.year ? <span className="text-zinc-500">({hero.year})</span> : null}
+              </p>
             </div>
           ) : null}
         </div>
@@ -112,22 +95,16 @@ export default async function TrendingPage() {
       {/* The Rising — ranked chart */}
       <section className="relative py-20 sm:py-28">
         <div className="mx-auto max-w-[1600px] px-6 sm:px-10">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-            <div>
-              <div className="flex items-center gap-4 mb-6">
-                <span className="h-px w-12 bg-brand-gold" />
-                <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-zinc-500">
-                  The chart · Top {movies.length}
-                </p>
-              </div>
-              <h2 className="font-serif font-light text-white text-5xl sm:text-6xl leading-[0.9] tracking-tight">
-                The <span className="italic text-zinc-400">Rising</span>.
-              </h2>
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="h-px w-12 bg-brand-gold" />
+              <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-zinc-500">
+                The chart · Top {movies.length}
+              </p>
             </div>
-            <p className="font-mono text-[11px] leading-relaxed text-zinc-500 max-w-sm lg:text-right">
-              Ranked by global momentum, rated by the crowd — and flagged where the
-              Cinéprism has already weighed in.
-            </p>
+            <h2 className="font-serif font-light text-white text-5xl sm:text-6xl leading-[0.9] tracking-tight">
+              The <span className="italic text-zinc-400">Rising</span>.
+            </h2>
           </div>
 
           {movies.length === 0 ? (

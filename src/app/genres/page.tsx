@@ -30,9 +30,6 @@ export default function GenresPage() {
         <div className="mx-auto max-w-[1600px] px-6 sm:px-10">
           <div className="flex items-center gap-4 mb-8">
             <span className="h-px w-12 bg-brand-gold" />
-            <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-zinc-500">
-              Explore by Grammar
-            </p>
           </div>
           <h1 className="font-serif font-light text-white text-6xl sm:text-7xl lg:text-[9vw] leading-[0.88] tracking-[-0.02em]">
             Genres<span className="italic text-zinc-500">, refracted</span>

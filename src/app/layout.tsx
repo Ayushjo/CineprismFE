@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, IBM_Plex_Mono, Inter } from "next/font/google";
+import { Cormorant_Garamond, IBM_Plex_Mono, Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
 import GrainOverlay from "@/components/site/GrainOverlay";
 import Nav from "@/components/site/Nav";
@@ -12,6 +12,14 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const instrument = Instrument_Serif({
+  variable: "--font-instrument",
+  subsets: ["latin"],
+  weight: ["400"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -61,7 +69,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${plexMono.variable} ${inter.variable}`}
+      className={`${cormorant.variable} ${instrument.variable} ${plexMono.variable} ${inter.variable}`}
     >
       <body className="bg-ink text-white antialiased selection:bg-brand-gold selection:text-black">
         <AuthProvider>

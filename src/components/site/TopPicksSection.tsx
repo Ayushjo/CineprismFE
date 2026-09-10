@@ -32,18 +32,12 @@ export default function TopPicksSection({ picks }: { picks: PickCardData[] }) {
               Top Picks<span className="text-brand-gold">.</span>
             </h2>
           </div>
-          <div className="flex flex-col items-start lg:items-end gap-4 max-w-md">
-            <p className="font-mono text-sm leading-relaxed text-zinc-500 lg:text-right">
-              Films worth losing sleep over — curated, argued for, unapologetic. The
-              shortlist that survives every rewatch.
-            </p>
-            <Link
-              href="/top-picks"
-              className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400 hover:text-white border-b border-white/20 hover:border-white pb-2 transition-colors"
-            >
-              View all picks →
-            </Link>
-          </div>
+          <Link
+            href="/top-picks"
+            className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400 hover:text-white border-b border-white/20 hover:border-white pb-2 transition-colors"
+          >
+            View all picks →
+          </Link>
         </div>
 
         {/* Showcase: featured #1 + ranked grid */}
