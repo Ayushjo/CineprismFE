@@ -52,7 +52,7 @@ export interface Review {
   poster?: string | null;
   /** Horizontal backdrop (reviewPosterImageUrl) — use for 16:9 / 2.35:1 displays. */
   backdrop?: string | null;
-  /** Generic best-available image (poster ‖ backdrop) — for OG/meta. */
+  /** Best image for OG/meta (backdrop ‖ poster) — landscape first for link previews. */
   image?: string | null;
   /** Gallery stills. */
   gallery: string[];

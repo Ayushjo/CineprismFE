@@ -63,7 +63,8 @@ export function postToReview(post: Post): Review {
     language: post.language,
     poster,
     backdrop,
-    image: poster || backdrop,
+    // Link previews (WhatsApp/X/OG) are landscape, so prefer the horizontal backdrop.
+    image: backdrop || poster,
     gallery,
     tagline: firstLine.length > 160 ? firstLine.slice(0, 157).trimEnd() + "…" : firstLine,
     body,
