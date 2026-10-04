@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Script from "next/script";
 import { useSearchParams } from "next/navigation";
+import { rememberPendingSubscription, trackNewsletterCheckoutStart } from "@/lib/analytics";
 import { Check } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.thecineprism.com/api/v1";
@@ -74,6 +75,7 @@ export default function NewsletterCheckout() {
     if (!window.Razorpay) return setError("Payment library still loading — try again in a moment.");
 
     setBusy(true);
+    trackNewsletterCheckoutStart(plan.billingInterval);
     try {
       const res = await fetch(`${API}/newsletter/checkout`, {
         method: "POST",
@@ -91,6 +93,7 @@ export default function NewsletterCheckout() {
         theme: { color: "#D4AF37" },
         prefill: { email: addr, name: name.trim() || undefined },
         handler(response: { razorpay_subscription_id?: string }) {
+          rememberPendingSubscription(plan.billingInterval);
           window.location.href = `/newsletter/status?razorpay_subscription_id=${response.razorpay_subscription_id || ""}&email=${encodeURIComponent(addr)}`;
         },
         modal: { ondismiss: () => setBusy(false) },

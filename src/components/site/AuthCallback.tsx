@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth, RETURN_TO_KEY } from "@/providers/AuthProvider";
+import { trackSignInComplete } from "@/lib/analytics";
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function AuthCallback() {
     }
     setAuthToken(token)
       .then(() => {
+        trackSignInComplete();
         let dest = "/";
         try {
           const rt = localStorage.getItem(RETURN_TO_KEY);

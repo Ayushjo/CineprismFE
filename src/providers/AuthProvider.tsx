@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import type { User } from "@/types/content";
+import { markAnalyticsIgnored } from "@/lib/analytics";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.thecineprism.com/api/v1";
 const TOKEN_KEY = "cineprism_auth_token";
@@ -24,7 +25,10 @@ async function fetchMe(token: string): Promise<User | null> {
     });
     if (!res.ok) return null;
     const data = await res.json();
-    return (data.user ?? data) as User;
+    const user = (data.user ?? data) as User;
+    // Keep the owner's own browsing out of analytics (persists past logout).
+    if (user?.role === "ADMIN") markAnalyticsIgnored();
+    return user;
   } catch {
     return null;
   }

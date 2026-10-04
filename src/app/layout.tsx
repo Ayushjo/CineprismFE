@@ -5,6 +5,7 @@ import GrainOverlay from "@/components/site/GrainOverlay";
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import Chrome from "@/components/site/Chrome";
+import SiteAnalytics from "@/components/site/SiteAnalytics";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, TWITTER_HANDLE } from "@/lib/seo";
 
@@ -77,6 +78,7 @@ export default function RootLayout({
             {children}
           </Chrome>
         </AuthProvider>
+        <SiteAnalytics />
       </body>
     </html>
   );

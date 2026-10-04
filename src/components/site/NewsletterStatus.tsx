@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { trackNewsletterSubscribed } from "@/lib/analytics";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.thecineprism.com/api/v1";
 
@@ -52,6 +53,10 @@ export default function NewsletterStatus() {
   const active =
     state.kind === "ok" &&
     (state.status === "ACTIVE" || state.subs.some((s) => s.status === "ACTIVE"));
+
+  useEffect(() => {
+    if (active && hasSubId) trackNewsletterSubscribed();
+  }, [active, hasSubId]);
 
   return (
     <div data-testid="newsletter-status" className="mx-auto max-w-2xl px-6 sm:px-10 text-center">

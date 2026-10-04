@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Share2, Link2, Check, X } from "lucide-react";
+import { trackShare } from "@/lib/analytics";
 
 type ShareButtonProps = {
   title: string;
@@ -88,6 +89,7 @@ export default function ShareButton({
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title, text: shareText, url: shareUrl });
+        trackShare("native", shareUrl);
         return;
       } catch {
         /* user dismissed — fall through to menu */
@@ -100,6 +102,7 @@ export default function ShareButton({
     const shareUrl = resolvedUrl || window.location.href;
     try {
       await navigator.clipboard.writeText(shareUrl);
+      trackShare("copy", shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
     } catch {
@@ -177,7 +180,10 @@ export default function ShareButton({
               target="_blank"
               rel="noopener noreferrer"
               role="menuitem"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                trackShare(c.key, resolvedUrl || window.location.href);
+                setOpen(false);
+              }}
               className="flex items-center gap-3 px-4 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-300 hover:bg-white hover:text-black transition-colors"
             >
               <span aria-hidden className="h-1.5 w-1.5 bg-current opacity-40" />

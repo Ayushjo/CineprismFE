@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
+import { trackSignInStart } from "@/lib/analytics";
 
 /**
  * SEO-safe soft gate. The children (server-rendered) ALWAYS stay in the DOM so
@@ -51,7 +52,10 @@ export default function AuthGate({
         </p>
         <button
           type="button"
-          onClick={() => loginWithGoogle(pathname)}
+          onClick={() => {
+            trackSignInStart("gate");
+            loginWithGoogle(pathname);
+          }}
           data-testid="gate-signin"
           className="inline-flex items-center gap-3 border border-white/25 bg-white text-black hover:bg-transparent hover:text-white hover:border-white px-8 py-4 font-mono text-[11px] uppercase tracking-[0.28em] transition-colors"
         >

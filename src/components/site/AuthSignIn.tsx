@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
+import { trackSignInStart } from "@/lib/analytics";
 
 const errorMessages: Record<string, string> = {
   auth_failed: "Google sign-in failed. Please try again.",
@@ -46,7 +47,10 @@ export default function AuthSignIn() {
 
       <button
         type="button"
-        onClick={() => loginWithGoogle(returnTo)}
+        onClick={() => {
+          trackSignInStart("auth_page");
+          loginWithGoogle(returnTo);
+        }}
         data-testid="google-signin-btn"
         className="group w-full inline-flex items-center justify-center gap-4 border border-white/25 hover:border-white bg-transparent hover:bg-white px-6 py-5 font-mono text-[11px] uppercase tracking-[0.28em] text-white hover:text-black transition-colors"
       >
