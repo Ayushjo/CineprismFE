@@ -61,6 +61,7 @@ export function postToReview(post: Post): Review {
     director: post.directedBy,
     streaming: post.streamingAt,
     language: post.language,
+    streamingFromJustWatch: Boolean(post.streamingSyncedAt),
     poster,
     backdrop,
     // Link previews (WhatsApp/X/OG) are landscape, so prefer the horizontal backdrop.

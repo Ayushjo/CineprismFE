@@ -140,6 +140,9 @@ export default async function ReviewDetailPage({
                 <div>
                   <dt className="uppercase tracking-[0.25em] text-zinc-600 mb-1">Streaming</dt>
                   <dd className="text-gold">{review.streaming || "—"}</dd>
+                  {review.streamingFromJustWatch ? (
+                    <dd className="mt-1 text-[9px] uppercase tracking-[0.2em] text-zinc-600">via JustWatch</dd>
+                  ) : null}
                 </div>
               </dl>
 

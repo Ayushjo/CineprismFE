@@ -26,6 +26,8 @@ export interface Post {
   language: string;
   posterImageUrl?: string | null;
   reviewPosterImageUrl?: string | null;
+  /** Set when streamingAt came from TMDB/JustWatch (needs attribution). */
+  streamingSyncedAt?: string | null;
   ratingCategories: RatingCategory[];
   viewCount: number;
   relatedPostIds?: string[];
@@ -48,6 +50,8 @@ export interface Review {
   director: string;
   streaming: string;
   language: string;
+  /** True when `streaming` comes from JustWatch (via TMDB) — show the credit. */
+  streamingFromJustWatch: boolean;
   /** Vertical/main poster (posterImageUrl) — use for 3:4 displays. */
   poster?: string | null;
   /** Horizontal backdrop (reviewPosterImageUrl) — use for 16:9 / 2.35:1 displays. */

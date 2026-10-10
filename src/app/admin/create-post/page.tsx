@@ -17,7 +17,7 @@ const LANGUAGES = [
   "Norwegian", "Danish", "Finnish",
 ];
 
-const STREAMING = ["Netflix", "Prime Video", "Disney+ Hotstar", "JioCinema", "Apple TV+", "Cinema Halls", "In Theatres", "YouTube"];
+const STREAMING = ["In Theatres", "Netflix", "Prime Video", "JioHotstar", "Apple TV+", "ZEE5", "SonyLIV", "YouTube"];
 const RATING_PRESETS = ["Story", "Screenplay", "Direction", "Acting", "Cinematography", "Music", "Editing"];
 
 type Rating = { category: string; score: number };
@@ -111,7 +111,7 @@ export default function CreatePostPage() {
           </div>
           <div>
             <label className={labelCls}>Streaming at</label>
-            <input className={inputCls} value={form.streamingAt} onChange={(e) => set("streamingAt", e.target.value)} placeholder="e.g. Netflix / Cinema Halls" />
+            <input className={inputCls} value={form.streamingAt} onChange={(e) => set("streamingAt", e.target.value)} placeholder="e.g. In Theatres / Netflix" />
             <div className="flex flex-wrap gap-1.5 mt-2">
               {STREAMING.map((s) => (
                 <button key={s} type="button" onClick={() => set("streamingAt", s)} className={`px-2 py-1 rounded text-[11px] border transition-colors ${form.streamingAt === s ? "border-emerald-500 text-white bg-emerald-500/15" : "border-slate-700 text-slate-400 hover:border-slate-500"}`}>
@@ -119,6 +119,7 @@ export default function CreatePostPage() {
                 </button>
               ))}
             </div>
+            <p className="mt-2 text-[11px] text-slate-500">Updated automatically each day from JustWatch when the film is found on TMDB; otherwise your value is kept.</p>
           </div>
           <div>
             <label className={labelCls}>Year</label>

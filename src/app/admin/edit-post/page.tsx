@@ -143,6 +143,7 @@ function EditPostInner() {
             <div>
               <label className={labelCls}>Streaming at</label>
               <input className={inputCls} value={form.streamingAt} onChange={(e) => set("streamingAt", e.target.value)} />
+              <p className="mt-2 text-[11px] text-slate-500">Updated automatically each day from JustWatch when the film is found on TMDB; otherwise your value is kept.</p>
             </div>
             <div>
               <label className={labelCls}>Year</label>
