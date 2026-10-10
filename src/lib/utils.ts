@@ -56,3 +56,13 @@ export function readingTime(text: string): string {
   const minutes = Math.max(1, Math.round(words / 220));
   return `${minutes} min read`;
 }
+
+/** Days since the epoch in India time — the site's "today" for daily rotations. */
+export function istDay(now: number = Date.now()): number {
+  return Math.floor((now + 330 * 60_000) / 86_400_000);
+}
+
+/** Index for `day` that jumps around the list instead of walking it in order. */
+export function dailyIndex(day: number, length: number): number {
+  return (Math.imul(day, 2654435761) >>> 0) % length;
+}

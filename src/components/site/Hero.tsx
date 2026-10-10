@@ -1,19 +1,23 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { heroImage } from "@/lib/media";
 
-type NowPlaying = { title: string } | null;
+type TonightsPick = {
+  title: string;
+  year: number;
+  byline: string | null; // director, or genre when we have no director
+  href: string;
+} | null;
 
-export default function Hero({ nowPlaying }: { nowPlaying?: NowPlaying }) {
+export default function Hero({ tonightsPick }: { tonightsPick?: TonightsPick }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     const t = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(t);
   }, []);
-
-  const title = nowPlaying?.title ?? "In The Mood For Love";
 
   return (
     <section
@@ -63,21 +67,28 @@ export default function Hero({ nowPlaying }: { nowPlaying?: NowPlaying }) {
           Good films make your life better
         </p>
 
-        <div
-          className={`mt-14 sm:mt-16 transition-all duration-1000 delay-700 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-500 mb-2">
-            Now Playing
-          </p>
-          <a
-            href="#featured"
-            className="font-serif italic text-white text-xl sm:text-2xl hover:text-brand-gold transition-colors"
+        {tonightsPick ? (
+          <div
+            data-testid="tonights-pick"
+            className={`mt-14 sm:mt-16 transition-all duration-1000 delay-700 ${
+              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
           >
-            {title}
-          </a>
-        </div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-500 mb-2">
+              <span className="text-brand-gold">✦</span> Tonight&rsquo;s Pick
+            </p>
+            <Link
+              href={tonightsPick.href}
+              className="font-serif italic text-white text-xl sm:text-2xl hover:text-brand-gold transition-colors"
+            >
+              {tonightsPick.title}
+            </Link>
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+              {tonightsPick.byline ? `${tonightsPick.byline} · ` : ""}
+              {tonightsPick.year}
+            </p>
+          </div>
+        ) : null}
       </div>
     </section>
   );
