@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { adminApi } from "@/lib/adminApi";
 import Dropzone from "@/components/admin/Dropzone";
 import ArticlePreview from "@/components/admin/ArticlePreview";
-import { Type, Heading, Image as ImageIcon, List, Quote, Minus, ClipboardPaste, Rows3 } from "lucide-react";
+import { Type, Heading, Image as ImageIcon, List, Quote, Minus, ClipboardPaste, Rows3, FileJson } from "lucide-react";
 
 type BlockType = "PARAGRAPH" | "HEADING" | "IMAGE" | "LIST" | "QUOTE" | "DIVIDER";
 type Block = {
@@ -29,6 +29,24 @@ const newBlock = (type: BlockType): Block => {
   return { ...base, text: "" };
 };
 
+// Shape accepted by "Import article" — e.g. a thread converted to an article.
+type ArticleImport = {
+  title?: string;
+  shortDescription?: string;
+  author?: string;
+  mainImageUrl?: string;
+  sections: { heading?: string; imageUrl?: string; text?: string }[];
+};
+
+async function fetchImageFile(url: string, name: string): Promise<File> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${res.status} for ${url}`);
+  const blob = await res.blob();
+  if (!blob.type.startsWith("image/")) throw new Error(`Not an image: ${url}`);
+  const ext = blob.type.split("/")[1]?.replace("jpeg", "jpg") || "jpg";
+  return new File([blob], `${name}.${ext}`, { type: blob.type });
+}
+
 const blockButtons: { type: BlockType; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
   { type: "PARAGRAPH", label: "Paragraph", Icon: Type },
   { type: "HEADING", label: "Heading", Icon: Heading },
@@ -44,6 +62,9 @@ export default function CreateArticlePage() {
   const [blocks, setBlocks] = useState<Block[]>([newBlock("PARAGRAPH")]);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteText, setPasteText] = useState("");
+  const [importOpen, setImportOpen] = useState(false);
+  const [importText, setImportText] = useState("");
+  const [importing, setImporting] = useState(false);
   const [view, setView] = useState<"edit" | "preview">("edit");
   const [submitting, setSubmitting] = useState(false);
 
@@ -73,6 +94,55 @@ export default function CreateArticlePage() {
     setPasteText(""); setPasteOpen(false);
     toast.success(`Added ${made.length} paragraph${made.length > 1 ? "s" : ""}.`);
   };
+
+  // Import a whole article (title, deck, cover, heading/image/text sections)
+  // from JSON; images are downloaded from their URLs into the editor.
+  async function runImport() {
+    let data: ArticleImport;
+    try {
+      data = JSON.parse(importText);
+      if (!Array.isArray(data.sections) || data.sections.length === 0) throw new Error("No sections");
+    } catch {
+      return toast.error("That isn't valid import JSON (needs a non-empty \"sections\" list).");
+    }
+
+    setImporting(true);
+    const t = toast.loading(`Importing ${data.sections.length} sections…`);
+    let failed = 0;
+    const load = (url: string | undefined, name: string) =>
+      url ? fetchImageFile(url, name).catch(() => { failed += 1; return null; }) : Promise.resolve(null);
+
+    try {
+      const [cover, ...images] = await Promise.all([
+        load(data.mainImageUrl, "cover"),
+        ...data.sections.map((sec, i) => load(sec.imageUrl, `section-${i + 1}`)),
+      ]);
+
+      const made: Block[] = [];
+      data.sections.forEach((sec, i) => {
+        if (sec.heading) made.push({ ...newBlock("HEADING"), text: sec.heading });
+        if (sec.imageUrl) made.push({ ...newBlock("IMAGE"), file: images[i], alt: sec.heading || "" });
+        if (sec.text) made.push({ ...newBlock("PARAGRAPH"), text: sec.text });
+      });
+
+      setMeta((m) => ({
+        ...m,
+        title: data.title ?? m.title,
+        shortDescription: data.shortDescription ?? m.shortDescription,
+        author: data.author ?? m.author,
+      }));
+      if (cover) setMainImage([cover]);
+      setBlocks(made);
+      setImportText("");
+      setImportOpen(false);
+      toast[failed ? "error" : "success"](
+        `Imported ${data.sections.length} sections${failed ? ` — ${failed} image(s) failed, add them by hand` : ""}. Check the preview, then publish.`,
+        { id: t, duration: 6000 }
+      );
+    } finally {
+      setImporting(false);
+    }
+  }
 
   async function submit() {
     if (!meta.title.trim()) return toast.error("Title is required.");
@@ -155,6 +225,22 @@ export default function CreateArticlePage() {
           <section>
             <label className={labelCls}>Main image *</label>
             <Dropzone files={mainImage} onChange={setMainImage} hint="Drag & drop the hero image, click, or paste" aspect="aspect-[2.35/1]" />
+          </section>
+
+          {/* Import whole article */}
+          <section className="border border-slate-800 rounded-lg">
+            <button type="button" onClick={() => setImportOpen((v) => !v)} className="flex w-full items-center gap-3 px-4 py-3 text-sm text-slate-300 hover:bg-slate-800/40">
+              <FileJson className="h-4 w-4 text-emerald-400" />
+              Import article — title, cover and sections from JSON (replaces current blocks)
+            </button>
+            {importOpen && (
+              <div className="p-4 border-t border-slate-800">
+                <textarea className={`${inputCls} min-h-[160px] font-mono text-xs`} value={importText} onChange={(e) => setImportText(e.target.value)} placeholder={'{ "title": "…", "shortDescription": "…", "mainImageUrl": "https://…", "sections": [ { "heading": "…", "imageUrl": "https://…", "text": "…" } ] }'} />
+                <button type="button" onClick={runImport} disabled={importing} className="mt-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold px-4 py-2 rounded-md text-sm disabled:opacity-50">
+                  {importing ? "Importing…" : "Import"}
+                </button>
+              </div>
+            )}
           </section>
 
           {/* Quick paste */}
