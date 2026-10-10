@@ -32,9 +32,9 @@ export default function RecentReviews({ reviews }: { reviews: Review[] }) {
         </div>
       </div>
 
-      <div className="border-t border-l border-white/10 mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {reviews.map((r, i) => (
-          <ReviewArchiveCard key={r.id} review={r} index={i} />
+      <div className="mx-auto max-w-[1600px] px-6 sm:px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 lg:gap-6">
+        {reviews.slice(0, 6).map((r) => (
+          <ReviewArchiveCard key={r.id} review={r} />
         ))}
       </div>
     </section>

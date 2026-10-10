@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Search, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Check, ChevronDown, Search, X } from "lucide-react";
 import type { Review } from "@/types/content";
 import ReviewArchiveCard from "@/components/site/ReviewArchiveCard";
 
@@ -12,6 +12,86 @@ const sorts: { key: SortKey; label: string }[] = [
   { key: "rating", label: "Rated" },
   { key: "az", label: "A–Z" },
 ];
+
+function GenreDropdown({
+  genres,
+  value,
+  onChange,
+}: {
+  genres: string[];
+  value: string | null;
+  onChange: (g: string | null) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const pick = (g: string | null) => {
+    onChange(g);
+    setOpen(false);
+  };
+
+  const option = (label: string, g: string | null) => {
+    const active = value === g;
+    return (
+      <li key={label}>
+        <button
+          type="button"
+          role="option"
+          aria-selected={active}
+          onClick={() => pick(g)}
+          className={`flex w-full items-center justify-between gap-4 px-4 py-2.5 text-left font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${
+            active ? "text-white bg-brand-gold/10" : "text-zinc-400 hover:bg-white hover:text-black"
+          }`}
+        >
+          <span>{label}</span>
+          {active && <Check className="h-3.5 w-3.5 text-brand-gold" />}
+        </button>
+      </li>
+    );
+  };
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        data-testid="genre-dropdown"
+        className={`inline-flex min-w-[11rem] items-center justify-between gap-3 border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.24em] transition-colors ${
+          value ? "border-brand-gold text-white bg-brand-gold/10" : "border-white/15 text-zinc-300 hover:border-white/40"
+        }`}
+      >
+        <span>{value ?? "All genres"}</span>
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <ul
+          role="listbox"
+          aria-label="Filter by genre"
+          className="absolute right-0 lg:left-0 lg:right-auto z-50 mt-2 max-h-80 w-56 overflow-y-auto border border-white/15 bg-black/95 backdrop-blur-xl shadow-2xl py-1"
+        >
+          {option("All genres", null)}
+          {genres.map((g) => option(g, g))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export default function ReviewsBrowser({ reviews }: { reviews: Review[] }) {
   const [q, setQ] = useState("");
@@ -72,31 +152,25 @@ export default function ReviewsBrowser({ reviews }: { reviews: Review[] }) {
             )}
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-600">Sort</span>
-            <div className="flex items-center gap-2">
-              {sorts.map((s) => (
-                <button key={s.key} type="button" onClick={() => setSort(s.key)} className={chip(sort === s.key)}>
-                  {s.label}
-                </button>
-              ))}
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            {genres.length > 0 && (
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-600">Genre</span>
+                <GenreDropdown genres={genres} value={genre} onChange={setGenre} />
+              </div>
+            )}
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-600">Sort</span>
+              <div className="flex items-center gap-2">
+                {sorts.map((s) => (
+                  <button key={s.key} type="button" onClick={() => setSort(s.key)} className={chip(sort === s.key)}>
+                    {s.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Genre filter */}
-        {genres.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 mt-6">
-            <button type="button" onClick={() => setGenre(null)} className={chip(genre === null)}>
-              All
-            </button>
-            {genres.map((g) => (
-              <button key={g} type="button" onClick={() => setGenre(genre === g ? null : g)} className={chip(genre === g)}>
-                {g}
-              </button>
-            ))}
-          </div>
-        )}
 
         <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500">
           {String(filtered.length).padStart(3, "0")} {filtered.length === 1 ? "result" : "results"}
@@ -118,9 +192,9 @@ export default function ReviewsBrowser({ reviews }: { reviews: Review[] }) {
           Nothing matches that. Try a different search.
         </p>
       ) : (
-        <div className="border-t border-l border-white/10 mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-6 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 lg:gap-6">
           {filtered.map((r, i) => (
-            <ReviewArchiveCard key={r.id} review={r} index={i} priority={i < 3} />
+            <ReviewArchiveCard key={r.id} review={r} priority={i < 5} />
           ))}
         </div>
       )}

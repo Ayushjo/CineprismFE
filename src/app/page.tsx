@@ -1,4 +1,4 @@
-import { getLatestReviews, getArticles, getTopPicks, getPostById, getQuotes } from "@/lib/api";
+import { getLatestReviews, getTopPicks, getPostById, getQuotes } from "@/lib/api";
 import { postToReview, topPickToCard } from "@/lib/adapters";
 import Hero from "@/components/site/Hero";
 import Ticker from "@/components/site/Ticker";
@@ -14,9 +14,8 @@ import { websiteJsonLd } from "@/lib/jsonld";
 export const revalidate = 300;
 
 export default async function Home() {
-  const [posts, articles, topPicksRaw, quotes] = await Promise.all([
+  const [posts, topPicksRaw, quotes] = await Promise.all([
     getLatestReviews(),
-    getArticles().catch(() => []),
     getTopPicks(),
     getQuotes(),
   ]);
@@ -34,22 +33,13 @@ export default async function Home() {
   const featuredPost = posts[0] ? await getPostById(posts[0].id) : null;
   const featured = featuredPost ? postToReview(featuredPost) : reviews[0] ?? null;
 
-  // Ticker: mix latest review + article titles for a live editorial feel.
-  const tickerItems = [
-    "Latest Dispatch",
-    ...reviews.slice(0, 3).map((r) => r.title),
-    "Just Published",
-    ...articles.slice(0, 2).map((a) => a.title),
-    "A Journal of Serious Film",
-  ];
-
   const nowPlaying = featured ? { title: featured.title } : undefined;
 
   return (
     <>
       <JsonLd data={websiteJsonLd()} />
       <Hero nowPlaying={nowPlaying} />
-      <Ticker items={tickerItems} />
+      <Ticker />
       <FeaturedReview review={featured} />
       <TopPicksSection picks={picks} />
       <QuoteBand quote={quote} />

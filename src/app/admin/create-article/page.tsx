@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { adminApi } from "@/lib/adminApi";
 import Dropzone from "@/components/admin/Dropzone";
 import ArticlePreview from "@/components/admin/ArticlePreview";
-import { Type, Heading, Image as ImageIcon, List, Quote, Minus, ClipboardPaste } from "lucide-react";
+import { Type, Heading, Image as ImageIcon, List, Quote, Minus, ClipboardPaste, Rows3 } from "lucide-react";
 
 type BlockType = "PARAGRAPH" | "HEADING" | "IMAGE" | "LIST" | "QUOTE" | "DIVIDER";
 type Block = {
@@ -56,6 +56,9 @@ export default function CreateArticlePage() {
       const c = [...prev]; [c[i], c[j]] = [c[j], c[i]]; return c;
     });
   const add = (type: BlockType) => setBlocks((prev) => [...prev, newBlock(type)]);
+  // One click → a full section: heading, image, then its paragraph.
+  const addSection = () =>
+    setBlocks((prev) => [...prev, newBlock("HEADING"), newBlock("IMAGE"), newBlock("PARAGRAPH")]);
 
   // Paste full text → split into paragraph blocks on blank lines.
   const splitPaste = () => {
@@ -232,6 +235,9 @@ export default function CreateArticlePage() {
 
             {/* Add-block toolbar */}
             <div className="mt-4 flex flex-wrap gap-2">
+              <button type="button" onClick={addSection} className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-xs border border-emerald-500/60 bg-emerald-500/10 text-emerald-300 hover:border-emerald-400 hover:text-white transition-colors">
+                <Rows3 className="h-3.5 w-3.5" /> Heading + Image + Text
+              </button>
               {blockButtons.map(({ type, label, Icon }) => (
                 <button key={type} type="button" onClick={() => add(type)} className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-xs border border-slate-700 text-slate-300 hover:border-emerald-500 hover:text-white transition-colors">
                   <Icon className="h-3.5 w-3.5" /> {label}
